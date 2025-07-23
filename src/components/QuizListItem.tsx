@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Quiz } from "../types/Quiz";
+import type { Quiz } from "../types/quiz";
 import Attribute from "./Attribute";
 import { Link, NavLink } from "react-router";
 import { EDIT_QUIZ_PAGE_PATH, VIEW_QUIZ_PAGE_PATH } from "../routes/router";

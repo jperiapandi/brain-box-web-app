@@ -7,12 +7,12 @@ import quizzesReducer, {
 } from "../reducers/QuizzesReducer";
 import {
   collection,
-  getDocs,
   getFirestore,
+  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
-import type { Quiz } from "../types/Quiz";
+import type { Quiz } from "../types/quiz";
 
 const QuizzesProvider: React.FunctionComponent<PropsWithChildren> = ({
   children,
@@ -21,16 +21,15 @@ const QuizzesProvider: React.FunctionComponent<PropsWithChildren> = ({
 
   useEffect(() => {
     //Load quizzes from backend
-    (async () => {
-      try {
-        console.log(`Start loading quizzes from Firestore`);
 
-        const q = query(
-          collection(getFirestore(), "quizzes"),
-          where("approved", "==", true)
-        );
+    console.log(`START listening for Quizzes collection`);
 
-        const querySnapshot = await getDocs(q);
+    const q = query(
+      collection(getFirestore(), "quizzes"),
+      where("approved", "==", true)
+    );
+    const unsubscribe = onSnapshot(q, {
+      next: (querySnapshot) => {
         if (querySnapshot.empty) {
           //No data in DB
           dispatch({
@@ -51,8 +50,22 @@ const QuizzesProvider: React.FunctionComponent<PropsWithChildren> = ({
             quizzes: result,
           });
         }
-      } catch (err) {}
-    })();
+      },
+      error: (err) => {
+        console.error(err);
+
+        dispatch({
+          type: SET_QUIZZES_TO_EMPTY,
+        });
+      },
+    });
+
+    //Return a cleanup function
+    return () => {
+      console.log(`STOP listening for Quizzes collection`);
+
+      unsubscribe();
+    };
   }, []);
 
   //

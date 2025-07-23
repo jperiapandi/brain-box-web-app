@@ -1,4 +1,4 @@
-import type { Quiz } from "../types/Quiz";
+import type { Quiz } from "../types/quiz";
 // import type { AnyActionArg } from "react";
 export const SET_QUIZZES = "setQuizzes";
 export const SET_QUIZZES_TO_EMPTY = "setQuizzesToEmpty";

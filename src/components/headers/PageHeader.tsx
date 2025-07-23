@@ -14,7 +14,7 @@ export default function PageHeader({
   return (
     <header className="page-header">
       {navBack && (
-        <nav className="nav-back-container">
+        <nav className="nav-left-container">
           <Link to={"/"}>
             <span className="material-symbols-rounded">arrow_back</span>
           </Link>
