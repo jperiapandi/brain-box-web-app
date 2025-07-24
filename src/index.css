@@ -37,6 +37,11 @@ body {
   color: var(--text-on-light);
 }
 
+.error {
+  color: hsl(8, 100%, 50%);
+  font-size: 0.8rem;
+}
+
 header.page-header {
   display: flex;
   align-items: center;
@@ -140,6 +145,10 @@ main.page-content {
     padding: 0.5rem;
     margin: 0.125rem 0;
   }
+
+  select {
+    width: 10rem;
+  }
 }
 
 .questions-panel {
@@ -195,6 +204,28 @@ main.page-content {
 
     label {
       flex-grow: 1;
+    }
+  }
+
+  .selected-answers-container {
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+    }
+    .selected-answers-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      div {
+        border: none;
+        background-color: hsl(201, 100%, 83%);
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 1rem;
+      }
     }
   }
 }

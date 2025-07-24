@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export type Answer = {
   id: string;
   value: string;
-  correct: boolean;
+  checked: boolean;
 };
 
 export type QuestionModel = {
@@ -22,7 +22,7 @@ export const Q_TYPE_CHOOSE_MULTIPLE = "choose_multiple";
 
 export const SupportedQuestionTypes: SelectOption[] = [
   {
-    value: "unknown",
+    value: Q_TYPE_UNKNOWN,
     label: "",
   },
   {
@@ -46,7 +46,7 @@ export function createAnswer(value: string): Answer {
   return {
     id: uuidv4(),
     value,
-    correct: false,
+    checked: false,
   };
 }
 

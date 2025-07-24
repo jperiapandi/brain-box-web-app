@@ -8,6 +8,8 @@ import {
 import FormField from "./FormField";
 
 import questionReducer, {
+  CHANGE_ANS_CHECKED,
+  CHANGE_ANS_TEXT,
   CHANGE_Q_TEXT,
   CHANGE_Q_TYPE,
 } from "../reducers/questionReducer";
@@ -30,6 +32,7 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
 
   const hasQuestionType = curQuestion.type != Q_TYPE_UNKNOWN;
   const answers = curQuestion.answersMap[curQuestion.type];
+  const selectedAnswers = answers.filter((ans) => ans.checked);
 
   const handleQTypeChange = (v: string) => {
     dispatch({
@@ -56,7 +59,7 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
           }}
           className="close-btn"
         >
-          <span className="material-symbols-rounded">close</span>
+          <span className="material-symbols-rounded">delete</span>
         </button>
       </div>
 
@@ -79,16 +82,46 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
       />
 
       {hasQuestionType ? (
-        <div className="answers-container">
-          <AnswerList
-            qId={curQuestion.id}
-            answers={answers}
-            qType={curQuestion.type}
-            onChange={() => {
-              console.log(`TODO -- Handle AnswersList Change!`);
-            }}
-          ></AnswerList>
-        </div>
+        <>
+          <div className="answers-container">
+            <AnswerList
+              qId={curQuestion.id}
+              answers={answers}
+              qType={curQuestion.type}
+              onTextChange={(ansId, ansText) => {
+                dispatch({
+                  type: CHANGE_ANS_TEXT,
+                  ansId,
+                  ansText,
+                });
+              }}
+              onCheckedChange={(ansId, checked) => {
+                dispatch({
+                  type: CHANGE_ANS_CHECKED,
+                  ansId,
+                  checked,
+                });
+              }}
+            ></AnswerList>
+          </div>
+
+          <div className="selected-answers-container">
+            {selectedAnswers.length == 0 ? (
+              <div className="error">Please set answers to this question.</div>
+            ) : (
+              <>
+                <h3>Answer(s)</h3>
+                <div className="selected-answers-list">
+                  {answers.map((ans) => {
+                    if (ans.checked) {
+                      return <div>{ans.value}</div>;
+                    }
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        </>
       ) : (
         <p>Choose a question type!</p>
       )}

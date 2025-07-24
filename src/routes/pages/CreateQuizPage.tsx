@@ -4,7 +4,6 @@ import FormField from "../../components/FormField";
 import {
   useReducer,
   useState,
-  type FormEventHandler,
   type MouseEventHandler,
 } from "react";
 import QuestionEditor from "../../components/QuestionEditor";
@@ -33,14 +32,6 @@ const CreateQuizPage: React.FunctionComponent = () => {
     });
   };
 
-  const submit: FormEventHandler<HTMLFormElement> = (evt) => {
-    evt.preventDefault();
-    console.log(`Form event: ${evt.type}`);
-
-    if (evt.type == "submit") {
-      //TODO: Submit the Quiz
-    }
-  };
   return (
     <>
       <PageHeader title="New Quiz" navBack={true}></PageHeader>
