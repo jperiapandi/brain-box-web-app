@@ -1,4 +1,3 @@
-import { v4 as uuidV4 } from "uuid";
 import type { SelectOption } from "../components/FormField";
 
 export type Answer = {
@@ -40,46 +39,3 @@ export const SupportedQuestionTypes: SelectOption[] = [
     label: "Multiple Choice",
   },
 ];
-
-/*
-export function TrueFalseQuestion(): QuestionModel {
-  return {
-    id: uuidV4(),
-    questionText: "",
-    type: Q_TYPE_TRUE_FALSE,
-    answers: [
-      {
-        value: "True",
-        correct: true,
-      },
-      {
-        value: "False",
-        correct: false,
-      },
-    ],
-  };
-}
-  */
-
-export interface Question1 {
-  readonly qId: string;
-  readonly questionText: string;
-  readonly type: string;
-  readonly answers: Answer[];
-}
-
-export class Question {
-  readonly qId: string;
-  private _questionText: string;
-  private _type: string;
-  private _answers: Answer[];
-
-  constructor() {
-    this.qId = uuidV4();
-    this._questionText = "";
-    this._type = "";
-    this._answers = [];
-  }
-
-  updateType(nv: string) {}
-}

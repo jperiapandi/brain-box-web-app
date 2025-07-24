@@ -10,13 +10,15 @@ import {
   type QuestionModel,
 } from "../types/questionTypes";
 import FormField from "./FormField";
+import EditText from "./EditText";
 
 type QuestionProps = PropsWithChildren & {
   sn: number;
   question: QuestionModel;
-  onOkay: () => void;
+  onChange: (v: QuestionModel) => void;
   onRemove: (id: string) => void;
 };
+
 const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
   sn,
   question,
@@ -25,7 +27,7 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
   const [qText, setQText] = useState(question.questionText);
   const [qType, setQType] = useState(question.type);
 
-  const [yesOrNoAnswers, setYesOrNoAnswers] = useState<Answer[]>([
+  const [yesOrNoAnswers] = useState<Answer[]>([
     {
       value: "Yes",
       correct: true,
@@ -36,7 +38,7 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
     },
   ]);
 
-  const [trueOrFalseAnswers, settrueOrFalseAnswers] = useState<Answer[]>([
+  const [trueOrFalseAnswers] = useState<Answer[]>([
     {
       value: "True",
       correct: true,
@@ -47,7 +49,7 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
     },
   ]);
 
-  const [singleChoiceAnswers, setSingleChoiceAnswers] = useState<Answer[]>([
+  const [singleChoiceAnswers] = useState<Answer[]>([
     {
       value: "Option 1",
       correct: true,
@@ -66,7 +68,7 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
     },
   ]);
 
-  const [multiChoiceAnswers, setMultiChoiceAnswers] = useState<Answer[]>([
+  const [multiChoiceAnswers] = useState<Answer[]>([
     {
       value: "Answer 1",
       correct: true,
@@ -86,7 +88,6 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
   ]);
 
   const [answers, setAnswers] = useState<Answer[]>(question.answers);
-
   const hasQuestionType = qType != "";
 
   const handleQTypeChange = (v: string) => {
@@ -188,11 +189,13 @@ const AnswersList: React.FunctionComponent<AnswersListProps> = ({
                   name={`answers-radio-group-${qId}`}
                   id={key}
                 />
-                <label htmlFor={key}>{ans.value}</label>
-
-                <button className="icon-btn">
-                  <span className="material-symbols-rounded">edit</span>
-                </button>
+                <EditText
+                  text={ans.value}
+                  onChange={(v) => {
+                    //New value received
+                    console.log(`TODO: Updated value : ${v}`);
+                  }}
+                />
               </div>
             );
           })}
@@ -212,10 +215,12 @@ const AnswersList: React.FunctionComponent<AnswersListProps> = ({
                   name={`answers-radio-group-${qId}`}
                   id={key}
                 />
-                <label htmlFor={key}>{ans.value}</label>
-                <button className="icon-btn">
-                  <span className="material-symbols-rounded">edit</span>
-                </button>
+                <EditText
+                  text={ans.value}
+                  onChange={(v) => {
+                    console.log(`TODO: Updated value : ${v}`);
+                  }}
+                />
               </div>
             );
           })}

@@ -1,28 +1,28 @@
 import type React from "react";
 import PageHeader from "../../components/headers/PageHeader";
 import FormField from "../../components/FormField";
-import { useReducer, type MouseEventHandler } from "react";
+import {
+  useReducer,
+  useState,
+  type FormEventHandler,
+  type MouseEventHandler,
+} from "react";
 import QuestionEditor from "../../components/QuestionEditor";
-import questionsReducer, {
+import questionListReducer, {
   ADD_QUESTION,
   REMOVE_QUESTION,
-} from "../../reducers/QuestionsReducer";
-
-import { v4 as uuidV4 } from "uuid";
+  UPDATE_QUESTION,
+} from "../../reducers/questionListReducer";
 
 const CreateQuizPage: React.FunctionComponent = () => {
-  const [questions, dispatch] = useReducer(questionsReducer, []);
+  const [questions, dispatch] = useReducer(questionListReducer, []);
+  const [quizTitle, setQuizTitle] = useState("");
+  const [quizDesc, setQuizDesc] = useState("");
 
   const onAddNewQuestionClick: MouseEventHandler = (evt) => {
     evt.stopPropagation();
     dispatch({
       type: ADD_QUESTION,
-      question: {
-        id: uuidV4(),
-        questionText: "",
-        type: "",
-        answers: [],
-      },
     });
   };
 
@@ -33,17 +33,20 @@ const CreateQuizPage: React.FunctionComponent = () => {
     });
   };
 
+  const submit: FormEventHandler<HTMLFormElement> = (evt) => {
+    evt.preventDefault();
+    console.log(`Form event: ${evt.type}`);
+
+    if (evt.type == "submit") {
+      //TODO: Submit the Quiz
+    }
+  };
   return (
     <>
       <PageHeader title="New Quiz" navBack={true}></PageHeader>
 
       <main className="page-content">
-        <form
-          className="create-quiz-form"
-          onSubmit={(evt) => {
-            evt.preventDefault();
-          }}
-        >
+        <form className="create-quiz-form" onSubmit={submit}>
           <div>
             <div>
               <span>Author:</span> <span>Periapandi J</span>
@@ -54,15 +57,21 @@ const CreateQuizPage: React.FunctionComponent = () => {
             type="input"
             label="Quiz Title"
             id="quiz-title"
-            value=""
+            value={quizTitle}
             placeHolder="Quiz Title"
+            onChange={(v) => {
+              setQuizTitle(v);
+            }}
           ></FormField>
           <FormField
             type="textarea"
             label="Description"
             id="quiz-desc"
-            value=""
+            value={quizDesc}
             placeHolder="Describe this quiz."
+            onChange={(v) => {
+              setQuizDesc(v);
+            }}
           ></FormField>
 
           <section className="questions">
@@ -84,7 +93,13 @@ const CreateQuizPage: React.FunctionComponent = () => {
                     key={q.id}
                     sn={idx + 1}
                     question={q}
-                    onOkay={() => {}}
+                    onChange={(v) => {
+                      dispatch({
+                        type: UPDATE_QUESTION,
+                        id: v.id,
+                        question: v,
+                      });
+                    }}
                     onRemove={onRemoveClick}
                   />
                 );
