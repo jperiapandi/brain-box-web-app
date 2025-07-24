@@ -90,6 +90,7 @@ const EditText: React.FunctionComponent<EditTextProps> = ({
           onChange={handleTextChange}
           onKeyDown={handleKeyHits}
           ref={inputRef}
+          name="answer-text-field"
         />
         <button
           className="icon-btn"

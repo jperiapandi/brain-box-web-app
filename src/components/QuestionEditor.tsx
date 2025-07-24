@@ -1,115 +1,48 @@
-import { useState, type PropsWithChildren } from "react";
+import { useReducer, type PropsWithChildren } from "react";
 import type React from "react";
 import {
-  Q_TYPE_CHOOSE_MULTIPLE,
-  Q_TYPE_CHOOSE_ONE,
-  Q_TYPE_TRUE_FALSE,
-  Q_TYPE_YES_OR_NO,
+  Q_TYPE_UNKNOWN,
   SupportedQuestionTypes,
-  type Answer,
   type QuestionModel,
 } from "../types/questionTypes";
 import FormField from "./FormField";
-import EditText from "./EditText";
 
-type QuestionProps = PropsWithChildren & {
+import questionReducer, {
+  CHANGE_Q_TEXT,
+  CHANGE_Q_TYPE,
+} from "../reducers/questionReducer";
+
+import AnswerList from "./AnswerList";
+
+type QuestionEditorProps = PropsWithChildren & {
   sn: number;
   question: QuestionModel;
   onChange: (v: QuestionModel) => void;
   onRemove: (id: string) => void;
 };
 
-const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
+const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
   sn,
   question,
   onRemove,
 }) => {
-  const [qText, setQText] = useState(question.questionText);
-  const [qType, setQType] = useState(question.type);
+  const [curQuestion, dispatch] = useReducer(questionReducer, question);
 
-  const [yesOrNoAnswers] = useState<Answer[]>([
-    {
-      value: "Yes",
-      correct: true,
-    },
-    {
-      value: "No",
-      correct: false,
-    },
-  ]);
-
-  const [trueOrFalseAnswers] = useState<Answer[]>([
-    {
-      value: "True",
-      correct: true,
-    },
-    {
-      value: "False",
-      correct: false,
-    },
-  ]);
-
-  const [singleChoiceAnswers] = useState<Answer[]>([
-    {
-      value: "Option 1",
-      correct: true,
-    },
-    {
-      value: "Option 2",
-      correct: false,
-    },
-    {
-      value: "Option 3",
-      correct: false,
-    },
-    {
-      value: "Option 4",
-      correct: false,
-    },
-  ]);
-
-  const [multiChoiceAnswers] = useState<Answer[]>([
-    {
-      value: "Answer 1",
-      correct: true,
-    },
-    {
-      value: "Answer 2",
-      correct: true,
-    },
-    {
-      value: "Answer 3",
-      correct: false,
-    },
-    {
-      value: "Answer 4",
-      correct: false,
-    },
-  ]);
-
-  const [answers, setAnswers] = useState<Answer[]>(question.answers);
-  const hasQuestionType = qType != "";
+  const hasQuestionType = curQuestion.type != Q_TYPE_UNKNOWN;
+  const answers = curQuestion.answersMap[curQuestion.type];
 
   const handleQTypeChange = (v: string) => {
-    console.log(`QType CHange Handler ${v}`);
+    dispatch({
+      type: CHANGE_Q_TYPE,
+      questionType: v,
+    });
+  };
 
-    setQType(v);
-    switch (v) {
-      case Q_TYPE_TRUE_FALSE:
-        setAnswers(trueOrFalseAnswers);
-        break;
-      case Q_TYPE_YES_OR_NO:
-        setAnswers(yesOrNoAnswers);
-        break;
-      case Q_TYPE_CHOOSE_ONE:
-        setAnswers(singleChoiceAnswers);
-        break;
-      case Q_TYPE_CHOOSE_MULTIPLE:
-        setAnswers(multiChoiceAnswers);
-        break;
-      default:
-        throw new Error(`Unknown question type `);
-    }
+  const handleQTextChange = (v: string) => {
+    dispatch({
+      type: CHANGE_Q_TEXT,
+      questionText: v,
+    });
   };
 
   return (
@@ -119,7 +52,7 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
         <button
           onClick={(evt) => {
             evt.stopPropagation();
-            onRemove(question.id);
+            onRemove(curQuestion.id);
           }}
           className="close-btn"
         >
@@ -131,103 +64,36 @@ const QuestionEditor: React.FunctionComponent<QuestionProps> = ({
         type="select"
         options={SupportedQuestionTypes}
         label="Question Type"
-        value={qType}
+        value={curQuestion.type}
         onChange={handleQTypeChange}
-        id={`q-type-${question.id}`}
+        id={`q-type-${curQuestion.id}`}
       />
 
       <FormField
         type="input"
         label="Question"
-        id={`q-text-${question.id}`}
-        value={qText}
-        onChange={(v) => {
-          setQText(v);
-        }}
+        id={`q-text-${curQuestion.id}`}
+        value={curQuestion.questionText}
+        onChange={handleQTextChange}
         placeHolder="Write the question text here."
       />
 
       {hasQuestionType ? (
         <div className="answers-container">
-          <AnswersList
-            qId={question.id}
+          <AnswerList
+            qId={curQuestion.id}
             answers={answers}
-            qType={qType}
-          ></AnswersList>
+            qType={curQuestion.type}
+            onChange={() => {
+              console.log(`TODO -- Handle AnswersList Change!`);
+            }}
+          ></AnswerList>
         </div>
       ) : (
         <p>Choose a question type!</p>
       )}
     </div>
   );
-};
-
-type AnswersListProps = PropsWithChildren & {
-  qId: string;
-  qType: string;
-  answers: Answer[];
-};
-
-const AnswersList: React.FunctionComponent<AnswersListProps> = ({
-  qId,
-  qType,
-  answers,
-}) => {
-  switch (qType) {
-    case Q_TYPE_TRUE_FALSE:
-    case Q_TYPE_YES_OR_NO:
-    case Q_TYPE_CHOOSE_ONE:
-      //Return a Radio Group
-      return (
-        <>
-          {answers.map((ans, i) => {
-            const key = `ans-${i}-${qId}`;
-            return (
-              <div className="answer-field" key={key} id={key}>
-                <input
-                  type="radio"
-                  name={`answers-radio-group-${qId}`}
-                  id={key}
-                />
-                <EditText
-                  text={ans.value}
-                  onChange={(v) => {
-                    //New value received
-                    console.log(`TODO: Updated value : ${v}`);
-                  }}
-                />
-              </div>
-            );
-          })}
-        </>
-      );
-      break;
-    case Q_TYPE_CHOOSE_MULTIPLE:
-      //Return a Check boxes list
-      return (
-        <>
-          {answers.map((ans, i) => {
-            const key = `ans-${i}-${qId}`;
-            return (
-              <div className="answer-field" key={key} id={key}>
-                <input
-                  type="checkbox"
-                  name={`answers-radio-group-${qId}`}
-                  id={key}
-                />
-                <EditText
-                  text={ans.value}
-                  onChange={(v) => {
-                    console.log(`TODO: Updated value : ${v}`);
-                  }}
-                />
-              </div>
-            );
-          })}
-        </>
-      );
-      break;
-  }
 };
 
 export default QuestionEditor;

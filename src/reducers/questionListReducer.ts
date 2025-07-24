@@ -1,8 +1,10 @@
 import type React from "react";
-import type { QuestionModel } from "../types/questionTypes";
-import { v4 as uuidv4 } from "uuid";
+import {
+  createDefaultQuestion,
+  type QuestionModel,
+} from "../types/questionTypes";
 
-export const ADD_QUESTION = "add-question";
+export const CREATE_QUESTION = "add-question";
 export const REMOVE_QUESTION = "remove-question";
 export const UPDATE_QUESTION = "update-question-type";
 
@@ -12,21 +14,18 @@ type QuestionListAction = {
   question?: QuestionModel;
 };
 
-const questionListReducer: React.Reducer<QuestionModel[], QuestionListAction> = (
-  prevState,
-  action
-) => {
+const questionListReducer: React.Reducer<
+  QuestionModel[],
+  QuestionListAction
+> = (prevState, action) => {
+  console.log(action.type, action.id, action.question);
+
   let updatedQuestions: QuestionModel[] = [];
   switch (action.type) {
-    case ADD_QUESTION:
+    case CREATE_QUESTION:
       {
         //Create a new Question Object and add it to the list of questions.
-        const n = action.question ?? {
-          id: uuidv4(),
-          questionText: "",
-          type: "",
-          answers: [],
-        };
+        const n = createDefaultQuestion();
         updatedQuestions = [...prevState, n];
       }
       break;

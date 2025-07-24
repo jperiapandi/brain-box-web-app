@@ -1,21 +1,41 @@
 import type React from "react";
 import type { QuestionModel } from "../types/questionTypes";
 
+export const CHANGE_Q_TYPE = "change-question-type";
+export const CHANGE_Q_TEXT = "change-question-text";
+
 type QuestionAction = {
   type: string;
+  questionType?: string;
+  questionText?: string;
 };
 
 const questionReducer: React.Reducer<QuestionModel, QuestionAction> = (
   prevState,
   action
 ) => {
-  let updatedQuestion: QuestionModel = { ...prevState };
-
+//   console.log(`${action.type}`);
   switch (action.type) {
+    case CHANGE_Q_TYPE:
+      if (action.questionType != undefined || action.questionType != null) {
+        return {
+          ...prevState,
+          type: action.questionType,
+        };
+      }
+      break;
+    case CHANGE_Q_TEXT:
+      if (action.questionText != undefined || action.questionText != null) {
+        return {
+          ...prevState,
+          questionText: action.questionText,
+        };
+      }
+      break;
     default:
-      throw new Error(`Unknown QuestionAction '${action.type}'`);
+      console.error(new Error(`Unknown QuestionAction '${action.type}'`));
   }
-  return updatedQuestion;
+  return prevState;
 };
 
 export default questionReducer;

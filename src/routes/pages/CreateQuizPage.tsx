@@ -9,7 +9,7 @@ import {
 } from "react";
 import QuestionEditor from "../../components/QuestionEditor";
 import questionListReducer, {
-  ADD_QUESTION,
+  CREATE_QUESTION,
   REMOVE_QUESTION,
   UPDATE_QUESTION,
 } from "../../reducers/questionListReducer";
@@ -22,7 +22,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
   const onAddNewQuestionClick: MouseEventHandler = (evt) => {
     evt.stopPropagation();
     dispatch({
-      type: ADD_QUESTION,
+      type: CREATE_QUESTION,
     });
   };
 
@@ -46,7 +46,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
       <PageHeader title="New Quiz" navBack={true}></PageHeader>
 
       <main className="page-content">
-        <form className="create-quiz-form" onSubmit={submit}>
+        <div className="create-quiz-form">
           <div>
             <div>
               <span>Author:</span> <span>Periapandi J</span>
@@ -105,6 +105,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
                 );
               })}
             </div>
+
             <div style={{ padding: "1rem 0rem" }}>
               <button onClick={onAddNewQuestionClick}>
                 <span className="material-symbols-rounded">add</span>
@@ -112,8 +113,8 @@ const CreateQuizPage: React.FunctionComponent = () => {
               </button>
             </div>
           </section>
-          <button type="submit">Submit</button>
-        </form>
+          <button>Submit</button>
+        </div>
       </main>
     </>
   );
