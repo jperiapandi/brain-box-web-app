@@ -94,13 +94,16 @@ const CreateQuizPage: React.FunctionComponent = () => {
             </div>
 
             <div style={{ padding: "1rem 0rem" }}>
-              <button onClick={onAddNewQuestionClick}>
+              <button
+                onClick={onAddNewQuestionClick}
+                className="btn btn-primary"
+              >
                 <span className="material-symbols-rounded">add</span>
                 <span>Add a Question</span>
               </button>
             </div>
           </section>
-          <button>Submit</button>
+          <button className="btn btn-primary" disabled>Submit</button>
         </div>
       </main>
     </>

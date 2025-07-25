@@ -21,8 +21,20 @@
   --primary-color: light-dark(hsl(303, 100%, 49%), hsl(303, 93%, 12%));
   --on-primary: hsl(0, 0%, 90%);
 
-  --text-on-light: hsl(303, 100%, 18%);
-  --text-on-dark: hsl(0, 0%, 0%);
+  --btn-default: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 50%));
+  --btn-default-hover: light-dark(hsl(0, 0%, 95%), hsl(0, 0%, 57%));
+  --on-btn-default: light-dark(hsl(0, 0%, 0%), hsl(0, 0%, 93%));
+  --on-btn-default-hover: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 100%));
+
+  --btn-primary: light-dark(hsl(224, 100%, 50%), hsl(222, 80%, 27%));
+  --btn-primary-hover: light-dark(hsl(217, 100%, 55%), hsl(216, 38%, 42%));
+  --on-btn-primary: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 89%));
+  --on-btn-primary-hover: light-dark(hsl(0, 0%, 97%), hsl(0, 0%, 100%));
+
+  --btn-secondary: light-dark(hsl(57, 100%, 50%), hsl(57, 100%, 39%));
+  --btn-secondary-hover: light-dark(hsl(60, 86%, 88%), hsl(57, 97%, 71%));
+  --on-btn-secondary: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 15%));
+  --on-btn-secondary-hover: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 20%));
 
   --surface-1-color: hsl(304, 100%, 97%);
   --on-surface-1: hsl(303, 58%, 35%);
@@ -33,8 +45,6 @@ body {
   color-scheme: light;
   padding: 0;
   margin: 0;
-
-  color: var(--text-on-light);
 }
 
 .error {
@@ -45,6 +55,53 @@ body {
 .info {
   color: hsl(222, 100%, 50%);
   font-size: 0.8rem;
+}
+
+.btn {
+  /* border: 0.0625rem solid; */
+  border: none;
+  border-radius: 0.5rem;
+  background: none;
+  background-color: var(--btn-default);
+  color: var(--on-btn-default);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  cursor: pointer;
+  filter: drop-shadow(1px 2px 2px hsla(0, 10%, 10%, 0.502));
+}
+
+.btn:hover {
+  background-color: var(--btn-default-hover);
+  color: var(--on-btn-default-hover);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-primary {
+  background-color: var(--btn-primary);
+  color: var(--on-btn-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+  color: var(--on-btn-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--btn-secondary);
+  color: var(--on-btn-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--btn-secondary-hover);
+  color: var(--on-btn-secondary-hover);
 }
 
 header.page-header {
