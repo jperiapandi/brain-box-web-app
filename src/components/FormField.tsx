@@ -80,7 +80,7 @@ const FormField: React.FunctionComponent<FormFieldProps> = ({
       formElm = (
         <select name="options" id={id} onChange={handleSelectChange}>
           {options?.map((o) => {
-            return <option value={o.value}>{o.label}</option>;
+            return <option value={o.value} key={o.value}>{o.label}</option>;
           })}
         </select>
       );

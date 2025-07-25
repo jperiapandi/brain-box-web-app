@@ -18,7 +18,7 @@ const questionListReducer: React.Reducer<
   QuestionModel[],
   QuestionListAction
 > = (prevState, action) => {
-  console.log(action.type, action.id, action.question);
+  // console.log(action.type, action.id, action.question);
 
   let updatedQuestions: QuestionModel[] = [];
   switch (action.type) {

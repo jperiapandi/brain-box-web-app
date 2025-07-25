@@ -69,7 +69,7 @@ const AnswerList: React.FunctionComponent<AnswerListProps> = ({
         );
       })}
 
-      {editable && <div>Edit the answer texts by clicking them.</div>}
+      {editable && <div className="info">Edit the answer texts by clicking them.</div>}
     </>
   );
 };

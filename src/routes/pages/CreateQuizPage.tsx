@@ -1,11 +1,7 @@
 import type React from "react";
 import PageHeader from "../../components/headers/PageHeader";
 import FormField from "../../components/FormField";
-import {
-  useReducer,
-  useState,
-  type MouseEventHandler,
-} from "react";
+import { useReducer, useState, type MouseEventHandler } from "react";
 import QuestionEditor from "../../components/QuestionEditor";
 import questionListReducer, {
   CREATE_QUESTION,

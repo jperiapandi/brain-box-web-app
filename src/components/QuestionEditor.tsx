@@ -1,4 +1,10 @@
-import { useReducer, type PropsWithChildren } from "react";
+import {
+  useEffect,
+  useReducer,
+  useState,
+  type JSX,
+  type PropsWithChildren,
+} from "react";
 import type React from "react";
 import {
   Q_TYPE_UNKNOWN,
@@ -15,6 +21,7 @@ import questionReducer, {
 } from "../reducers/questionReducer";
 
 import AnswerList from "./AnswerList";
+import useDebounce from "../hooks/useDebounce";
 
 type QuestionEditorProps = PropsWithChildren & {
   sn: number;
@@ -27,8 +34,23 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
   sn,
   question,
   onRemove,
+  onChange
 }) => {
   const [curQuestion, dispatch] = useReducer(questionReducer, question);
+
+  //Update Question after a delay
+  const [qText, setQText] = useState(curQuestion.questionText);
+  const debouncedQText = useDebounce(qText, 1000);
+  useEffect(() => {
+    dispatch({
+      type: CHANGE_Q_TEXT,
+      questionText: debouncedQText,
+    });
+  }, [debouncedQText]);
+
+  useEffect(() => {
+    onChange(curQuestion);
+  }, [curQuestion]);
 
   const hasQuestionType = curQuestion.type != Q_TYPE_UNKNOWN;
   const answers = curQuestion.answersMap[curQuestion.type];
@@ -41,17 +63,19 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
     });
   };
 
-  const handleQTextChange = (v: string) => {
-    dispatch({
-      type: CHANGE_Q_TEXT,
-      questionText: v,
-    });
-  };
-
   return (
     <div className="question-editor">
       <div className="header">
         <div className="sn">{sn}</div>
+        <FormField
+          type="select"
+          options={SupportedQuestionTypes}
+          label="Question Type"
+          value={curQuestion.type}
+          onChange={handleQTypeChange}
+          id={`q-type-${curQuestion.id}`}
+        />
+        <div className="h-space" />
         <button
           onClick={(evt) => {
             evt.stopPropagation();
@@ -64,20 +88,13 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
       </div>
 
       <FormField
-        type="select"
-        options={SupportedQuestionTypes}
-        label="Question Type"
-        value={curQuestion.type}
-        onChange={handleQTypeChange}
-        id={`q-type-${curQuestion.id}`}
-      />
-
-      <FormField
         type="input"
         label="Question"
         id={`q-text-${curQuestion.id}`}
-        value={curQuestion.questionText}
-        onChange={handleQTextChange}
+        value={qText}
+        onChange={(v: string) => {
+          setQText(v);
+        }}
         placeHolder="Write the question text here."
       />
 
@@ -114,7 +131,7 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
                 <div className="selected-answers-list">
                   {answers.map((ans) => {
                     if (ans.checked) {
-                      return <div>{ans.value}</div>;
+                      return <div key={ans.id}>{ans.value}</div>;
                     }
                   })}
                 </div>
@@ -123,7 +140,7 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
           </div>
         </>
       ) : (
-        <p>Choose a question type!</p>
+        <div className="error">Choose a question type!</div>
       )}
     </div>
   );

@@ -24,7 +24,7 @@ const questionReducer: React.Reducer<QuestionModel, QuestionAction> = (
   prevState,
   action
 ) => {
-  //   console.log(`${action.type}`);
+    // console.log(`${action.type}`);
   switch (action.type) {
     case CHANGE_Q_TYPE:
       if (action.questionType != undefined || action.questionType != null) {
@@ -36,10 +36,12 @@ const questionReducer: React.Reducer<QuestionModel, QuestionAction> = (
       break;
     case CHANGE_Q_TEXT:
       if (action.questionText != undefined || action.questionText != null) {
-        return {
-          ...prevState,
-          questionText: action.questionText,
-        };
+        if (action.questionText !== prevState.questionText) {
+          return {
+            ...prevState,
+            questionText: action.questionText,
+          };
+        }
       }
       break;
     case CHANGE_ANS_TEXT:

@@ -89,7 +89,7 @@ export function createDefaultQuestion(): QuestionModel {
 
   return {
     id: uuidv4(),
-    questionText: "",
+    questionText: "What is your question?",
     type: Q_TYPE_UNKNOWN,
     answersMap,
   };
