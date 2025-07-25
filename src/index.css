@@ -58,7 +58,8 @@ body {
 }
 
 .btn {
-  /* border: 0.0625rem solid; */
+  min-height: 2.5rem;
+
   border: none;
   border-radius: 0.5rem;
   background: none;
@@ -321,6 +322,50 @@ main.page-content {
   }
 }
 
+.section-quiz-drafts {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .section-title {
+    padding: 0;
+    margin: 0;
+    font-size: medium;
+    font-weight: 400;
+  }
+
+  .drafts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .draft-item {
+    background-color: var(--surface-1-color);
+    padding: 1rem 0;
+    padding-left: 1rem;
+
+    h1 {
+      margin: 0;
+      margin-bottom: 1rem;
+      font-weight: 350;
+    }
+  }
+}
+
+.label-value-pair {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  span:first-child {
+    color: rgb(0, 0, 0);
+    font-weight: 350;
+  }
+  span:last-child {
+    color: rgb(120, 120, 120);
+  }
+}
 @media only screen and (min-width: 798px) {
   .questions-panel {
     display: grid;

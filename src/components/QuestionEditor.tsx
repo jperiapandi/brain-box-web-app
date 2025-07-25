@@ -2,7 +2,6 @@ import {
   useEffect,
   useReducer,
   useState,
-  type JSX,
   type PropsWithChildren,
 } from "react";
 import type React from "react";
