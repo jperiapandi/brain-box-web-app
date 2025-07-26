@@ -1,7 +1,12 @@
 import type React from "react";
 import PageHeader from "../../components/headers/PageHeader";
 import FormField from "../../components/FormField";
-import { useReducer, useState, type MouseEventHandler } from "react";
+import {
+  useContext,
+  useReducer,
+  useState,
+  type MouseEventHandler,
+} from "react";
 import QuestionEditor from "../../components/QuestionEditor";
 import questionListReducer, {
   CREATE_QUESTION,
@@ -18,8 +23,10 @@ import {
   setDoc,
   type DocumentData,
 } from "firebase/firestore";
+import { UserContext } from "../../contexts/UserContext";
 
 const CreateQuizPage: React.FunctionComponent = () => {
+  const user = useContext(UserContext);
   const [questions, dispatch] = useReducer(questionListReducer, []);
   const [quizTitle, setQuizTitle] = useState("");
   const [quizDesc, setQuizDesc] = useState("");
@@ -43,6 +50,9 @@ const CreateQuizPage: React.FunctionComponent = () => {
 
   const handleSaveClick: MouseEventHandler<HTMLButtonElement> = async (evt) => {
     evt.stopPropagation();
+    if (user == null) {
+      return;
+    }
     //Validate the data.
     //Submit the data to Firebase
     const hasValidTitle = quizTitle.trim() != "";
@@ -78,16 +88,13 @@ const CreateQuizPage: React.FunctionComponent = () => {
     const allQACorrect = invalidQuestions.length == 0;
 
     if (hasValidTitle && hasValidDesc && allQACorrect) {
-      const user = {
-        uuid: "jperiapandi",
-        displayName: "Periapandi J",
-      };
       const quizDoc: any = {
         title: quizTitle,
         desc: quizDesc,
         author: user.displayName,
         questions: questions,
-        author_uuid: user.uuid,
+        author_uid: user.uid,
+        isAnonymous: user.isAnonymous,
       };
 
       if (!docRef) {

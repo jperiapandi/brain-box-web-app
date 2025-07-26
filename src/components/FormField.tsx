@@ -6,11 +6,11 @@ export type SelectOption = {
 };
 
 type FormFieldProps = PropsWithChildren & {
-  type: "input" | "textarea" | "radio" | "checkbox" | "select";
+  type: "input" | "textarea" | "radio" | "checkbox" | "select" | "password";
   id: string;
   label: string;
   placeHolder?: string;
-  value: string;
+  value?: string;
   onChange?: (v: string) => void;
   options?: SelectOption[];
 };
@@ -20,7 +20,7 @@ const FormField: React.FunctionComponent<FormFieldProps> = ({
   id,
   label,
   placeHolder,
-  value,
+  value = "",
   onChange,
   options,
 }) => {
@@ -61,6 +61,18 @@ const FormField: React.FunctionComponent<FormFieldProps> = ({
         />
       );
       break;
+    case "password":
+      formElm = (
+        <input
+          type="password"
+          id={id}
+          value={value}
+          placeholder={placeHolder}
+          onChange={handleInputChange}
+          autoComplete=""
+        />
+      );
+      break;
     case "textarea":
       formElm = (
         <textarea
@@ -80,7 +92,11 @@ const FormField: React.FunctionComponent<FormFieldProps> = ({
       formElm = (
         <select name="options" id={id} onChange={handleSelectChange}>
           {options?.map((o) => {
-            return <option value={o.value} key={o.value}>{o.label}</option>;
+            return (
+              <option value={o.value} key={o.value}>
+                {o.label}
+              </option>
+            );
           })}
         </select>
       );

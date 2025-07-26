@@ -36,6 +36,11 @@
   --on-btn-secondary: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 15%));
   --on-btn-secondary-hover: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 20%));
 
+  --btn-logout: light-dark(hsl(14, 100%, 50%), hsl(14, 100%, 39%));
+  --btn-logout-hover: light-dark(hsl(26, 100%, 50%), hsl(57, 97%, 71%));
+  --on-btn-logout: light-dark(hsl(0, 0%, 89%), hsl(0, 0%, 15%));
+  --on-btn-logout-hover: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 20%));
+
   --surface-1-color: hsl(304, 100%, 97%);
   --on-surface-1: hsl(303, 58%, 35%);
 }
@@ -57,6 +62,39 @@ body {
   font-size: 0.8rem;
 }
 
+dialog.modal {
+  border: none;
+  padding: 0;
+}
+
+dialog.modal::backdrop {
+  background-color: hsla(0, 0%, 0%, 0.6);
+}
+
+.profile-icon-btn {
+  anchor-name: --profile-btn;
+}
+
+.profile-popover {
+  border: none;
+  padding: 1rem;
+  position-anchor: --profile-btn;
+  position: fixed;
+  margin: 0;
+  inset: auto;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-block-start: 0.5rem;
+
+  filter: drop-shadow(1px 1px 2px hsl(0, 10%, 10%));
+}
+
+.profile-popover:popover-open {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .btn {
   min-height: 2.5rem;
 
@@ -66,7 +104,7 @@ body {
   background-color: var(--btn-default);
   color: var(--on-btn-default);
   padding: 0.5rem 1rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -103,6 +141,16 @@ body {
 .btn-secondary:hover {
   background-color: var(--btn-secondary-hover);
   color: var(--on-btn-secondary-hover);
+}
+
+.btn-logout {
+  background-color: var(--btn-logout);
+  color: var(--on-btn-logout);
+}
+
+.btn-logout:hover {
+  background-color: var(--btn-logout-hover);
+  color: var(--on-btn-logout-hover);
 }
 
 header.page-header {
@@ -186,6 +234,10 @@ header.page-header {
 }
 
 main.page-content {
+  padding: 1rem;
+}
+
+footer.page-footer {
   padding: 1rem;
 }
 
@@ -323,7 +375,6 @@ main.page-content {
 }
 
 .section-quiz-drafts {
-  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -354,6 +405,23 @@ main.page-content {
   }
 }
 
+.login-modal-container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h1 {
+    margin: 0;
+  }
+
+  footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+}
+
 .label-value-pair {
   display: flex;
   gap: 0.5rem;
@@ -366,10 +434,69 @@ main.page-content {
     color: rgb(120, 120, 120);
   }
 }
+
+/**Auth Page**/
+.main-auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  padding: 0 1rem;
+
+  section {
+    border: thin solid rgb(178, 178, 178);
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 90%;
+  }
+}
+
+.two-controls {
+  display: flex;
+  align-items: center;
+
+  > :first-child {
+    flex-grow: 1;
+  }
+
+  > :last-child {
+    flex-grow: 1;
+  }
+}
+
+.section-recover-password {
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .success-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
 @media only screen and (min-width: 798px) {
   .questions-panel {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+  }
+
+  .main-auth-page {
+    section {
+      max-width: 550px;
+    }
   }
 }

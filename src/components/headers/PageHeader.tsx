@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { Link } from "react-router";
+import Profile from "../Profile";
 
 type PageHeaderProps = PropsWithChildren & {
   title: string;
@@ -26,6 +27,10 @@ export default function PageHeader({
         {subTitle && subTitle != "" && (
           <h2 className="sub-title">{subTitle}</h2>
         )}
+      </div>
+
+      <div>
+        <Profile/>
       </div>
     </header>
   );

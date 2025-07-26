@@ -5,15 +5,20 @@ import {
   query,
   QueryDocumentSnapshot,
   Timestamp,
+  where,
   type DocumentData,
 } from "firebase/firestore";
 import type React from "react";
-import { useEffect, useState, type MouseEventHandler } from "react";
-import { CREATE_QUIZ_PAGE_PATH } from "../routes/router";
-import { useNavigate } from "react-router";
+import { useContext, useEffect, useState, type PropsWithChildren } from "react";
 
-const QuizDraftsList: React.FunctionComponent = () => {
-  const navigate = useNavigate();
+import { UserContext } from "../contexts/UserContext";
+
+type QuizDraftsListProps = PropsWithChildren & {
+  onEdit: (quizDraftId: string) => void;
+};
+
+const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
+  const user = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [drafts, setDrafts] = useState<
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
@@ -21,27 +26,34 @@ const QuizDraftsList: React.FunctionComponent = () => {
 
   useEffect(() => {
     //Load Drafts from Firebase
+    if (user) {
+      const q = query(
+        collection(getFirestore(), "quiz-drafts"),
+        where("author_uid", "==", user.uid)
+      );
+      const unsubscribe = onSnapshot(q, {
+        next: (snapshot) => {
+          setLoading(false);
+          if (snapshot.empty) {
+            //No data in Firebase
+            return;
+          }
+          setDrafts(snapshot.docs);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
 
-    const q = query(collection(getFirestore(), "quiz-drafts"));
-    const unsubscribe = onSnapshot(q, {
-      next: (snapshot) => {
-        setLoading(false);
-        if (snapshot.empty) {
-          //No data in Firebase
-          return;
-        }
-        setDrafts(snapshot.docs);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+      return () => {
+        unsubscribe();
+      };
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
+  //TODO - Move the following function to a separate js file
   function getFormattedDate(timestamp: Timestamp) {
     if (!timestamp) {
       return "";
@@ -59,11 +71,10 @@ const QuizDraftsList: React.FunctionComponent = () => {
     });
   }
 
-  const handleCreateQuizClick: MouseEventHandler = (evt) => {
-    evt.stopPropagation();
-    navigate(CREATE_QUIZ_PAGE_PATH);
-  };
-
+  if (drafts.length == 0) {
+    return null;
+  }
+  
   return (
     <section className="section-quiz-drafts">
       {loading ? (
@@ -93,12 +104,6 @@ const QuizDraftsList: React.FunctionComponent = () => {
                 </div>
               );
             })}
-          </div>
-
-          <div>
-            <button onClick={handleCreateQuizClick} className="btn btn-primary">
-              Create a Quiz
-            </button>
           </div>
         </>
       )}
