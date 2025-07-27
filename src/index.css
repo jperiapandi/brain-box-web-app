@@ -70,7 +70,7 @@ dialog.modal {
 dialog.modal::backdrop {
   background-color: hsla(0, 0%, 0%, 0.6);
 }
-
+/*
 .profile-icon-btn {
   anchor-name: --profile-btn;
 }
@@ -94,6 +94,7 @@ dialog.modal::backdrop {
   flex-direction: column;
   gap: 1rem;
 }
+*/
 
 .btn {
   min-height: 2.5rem;

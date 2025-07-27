@@ -9,6 +9,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   signInAnonymously,
   signInWithEmailAndPassword,
@@ -21,6 +22,8 @@ const SIGN_IN = "sign-in";
 const SIGN_UP = "sign-up";
 const FORGOT_PASSWORD = "forgot-password";
 const ANONYMOUS_SIGN_IN = "anonymous-sign-in";
+
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const AuthPage: React.FunctionComponent = () => {
   const [uiState, setUiState] = useState(SIGN_IN);
@@ -36,9 +39,10 @@ const AuthPage: React.FunctionComponent = () => {
       title = "Guest Sign In";
       break;
   }
+
   return (
     <>
-      <PageHeader title={title} />
+      <PageHeader title={title} profile={false} />
 
       <main className="main-auth-page">
         {uiState == SIGN_IN && <SignInSection changeUiState={setUiState} />}
@@ -179,9 +183,103 @@ const SignInSection: React.FunctionComponent<AuthSectionProps> = ({
 const SignUpSection: React.FunctionComponent<AuthSectionProps> = ({
   changeUiState,
 }) => {
-  const onSignupSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
+  const navigate = useNavigate();
+
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const [signUpDisabled, setSignUpDisabled] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorState, setErrorState] = useState(false);
+  const [progressState, setProgressState] = useState(false);
+
+  useEffect(() => {
+    setErrorState(false);
+    setErrorMsg("");
+    setSignUpDisabled(true);
+
+    const timeout = setTimeout(() => {
+      //Delayed operation
+      // console.log(`Debounced validation ${new Date().getTime()}`);
+      if (
+        displayName == "" ||
+        email == "" ||
+        password == "" ||
+        passwordConfirm == ""
+      ) {
+        return;
+      }
+      const validDisplayName = displayName != "";
+      const validEmail = email != "" && EMAIL_REGEX.test(email);
+
+      if (!validEmail) {
+        setErrorState(true);
+        setErrorMsg("Please provide a valid email.");
+        return;
+      }
+
+      const validPwd = password != "";
+      const validPwdCfm = passwordConfirm != "";
+
+      const pwdsSame = validPwd && validPwdCfm && password == passwordConfirm;
+      const pwdRuleSatisfied = password.length >= 6;
+
+      const allGood =
+        validDisplayName &&
+        validEmail &&
+        validPwd &&
+        validPwdCfm &&
+        pwdsSame &&
+        pwdRuleSatisfied;
+
+      setSignUpDisabled(!allGood);
+
+      if (password != "" && passwordConfirm != "" && !pwdsSame) {
+        setErrorState(true);
+        setErrorMsg("Please confirm the passwords are same.");
+      } else {
+        if (password.length < 6) {
+          setErrorState(true);
+          setErrorMsg("Password should be at least 6 characters.");
+        }
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [displayName, email, password, passwordConfirm]);
+  const onSignupSubmit: FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
     console.log(`Signup `);
+    try {
+      setErrorState(false);
+      setErrorMsg("");
+      setSignUpDisabled(true);
+      setProgressState(true);
+
+      const userCredential = await createUserWithEmailAndPassword(
+        getAuth(),
+        email,
+        password
+      );
+      console.log(
+        `User '${userCredential.user.email}' Registered Successfully.`
+      );
+      await updateProfile(userCredential.user, { displayName });
+      console.log(`User's display name set successfully.`);
+      setProgressState(false);
+      //Navigate to Home page
+      navigate(HOME_PAGE_PATH);
+    } catch (err) {
+      console.error(err);
+      setErrorState(true);
+      setErrorMsg("Sorry, something went wrong. Please try signing up later.");
+      setSignUpDisabled(false);
+      setProgressState(false);
+    }
   };
   const onLoginAnchorClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
     evt.stopPropagation();
@@ -193,13 +291,33 @@ const SignUpSection: React.FunctionComponent<AuthSectionProps> = ({
     <section className="section-signup">
       <h2>Sign Up using your email ID</h2>
       <form action="submit" onSubmit={onSignupSubmit} id="signup-form">
-        <FormField type="input" label="Full Name" id="signup-email" />
-        <FormField type="input" label="Email ID:" id="signup-email" />
-        <FormField type="password" label="Password:" id="signup-pwd" />
+        <FormField
+          type="input"
+          label="Full Name"
+          id="signup-full-name"
+          value={displayName}
+          onChange={setDisplayName}
+        />
+        <FormField
+          type="input"
+          label="Email ID:"
+          id="signup-email"
+          value={email}
+          onChange={setEmail}
+        />
+        <FormField
+          type="password"
+          label="Password:"
+          id="signup-pwd"
+          value={password}
+          onChange={setPassword}
+        />
         <FormField
           type="password"
           label="Confirm Password:"
           id="signup-pwd-cfm"
+          value={passwordConfirm}
+          onChange={setPasswordConfirm}
         />
       </form>
 
@@ -210,10 +328,20 @@ const SignUpSection: React.FunctionComponent<AuthSectionProps> = ({
             Please login.
           </a>
         </div>
-        <button className="btn btn-primary" type="submit" form="signup-form">
+        <button
+          className="btn btn-primary"
+          type="submit"
+          form="signup-form"
+          disabled={signUpDisabled}
+        >
           <span className="material-symbols-rounded">login</span>
           <span>Sign Up</span>
         </button>
+      </div>
+
+      <div>
+        {progressState && <div className="info">{"Please wait..."}</div>}
+        {errorState && <div className="error">{errorMsg}</div>}
       </div>
     </section>
   );

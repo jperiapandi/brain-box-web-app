@@ -128,7 +128,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
         <div className="create-quiz-form">
           <div>
             <div>
-              <span>Author:</span> <span>Periapandi J</span>
+              <span>Author:</span> <span>{user?.displayName}</span>
             </div>
           </div>
 

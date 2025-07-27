@@ -6,11 +6,13 @@ type PageHeaderProps = PropsWithChildren & {
   title: string;
   subTitle?: string;
   navBack?: boolean;
+  profile?: boolean;
 };
 export default function PageHeader({
   title,
   subTitle,
   navBack,
+  profile = true,
 }: PageHeaderProps) {
   return (
     <header className="page-header">
@@ -28,10 +30,11 @@ export default function PageHeader({
           <h2 className="sub-title">{subTitle}</h2>
         )}
       </div>
-
-      <div>
-        <Profile/>
-      </div>
+      {profile && (
+        <div>
+          <Profile />
+        </div>
+      )}
     </header>
   );
 }
