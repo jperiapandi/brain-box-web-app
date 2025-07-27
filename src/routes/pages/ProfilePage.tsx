@@ -1,15 +1,38 @@
 import type React from "react";
 import PageHeader from "../../components/headers/PageHeader";
-import { useContext, useState, type MouseEventHandler } from "react";
+import { useContext, useEffect, useState, type MouseEventHandler } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { HOME_PAGE_PATH } from "../router";
+import {
+  collection,
+  getCountFromServer,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
 
 const ProfilePage: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  const [numOwnQuizzes] = useState(4);
+  const [numOwnQuizzes, setNumOwnQuizzes] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+      const q = query(
+        collection(getFirestore(), "quiz-drafts"),
+        where("author_uid", "==", user.uid)
+      );
+      getCountFromServer(q)
+        .then((v) => {
+          setNumOwnQuizzes(v.data().count);
+        })
+        .catch((reason) => {
+          console.error(reason);
+        });
+    }
+  }, [user]);
 
   const handleLogoutClick: MouseEventHandler<HTMLButtonElement> = async (
     evt
@@ -45,22 +68,24 @@ const ProfilePage: React.FunctionComponent = () => {
             <button className="btn btn-logout" onClick={handleLogoutClick}>
               Logout
             </button>
-            <ul>
-              <p>Note:</p>
-              <li>Your current Anonymous will be deleted once you logout.</li>
-              <li>
-                A new Anonymous account will be created when you sign in back
-                later.
-              </li>
-              <li>
-                All {numOwnQuizzes} of your unpublished quizzes will become
-                inaccessible to you/others.
-              </li>
-              <li>
-                All published quizzes will continue to be available for users as
-                usual.
-              </li>
-            </ul>
+            {user.isAnonymous && (
+              <ul>
+                <p>Note:</p>
+                <li>Your current Anonymous will be deleted once you logout.</li>
+                <li>
+                  A new Anonymous account will be created when you sign in back
+                  later.
+                </li>
+                <li>
+                  All {numOwnQuizzes} of your unpublished quizzes will become
+                  inaccessible to you/others.
+                </li>
+                <li>
+                  All published quizzes will continue to be available for users
+                  as usual.
+                </li>
+              </ul>
+            )}
           </div>
         </main>
       ) : (

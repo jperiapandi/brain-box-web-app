@@ -13,10 +13,11 @@ function App() {
         console.warn(`Auth State Changed Success. `);
         if (user == null) {
           console.log(`No one is logged in.`);
-          return;
+          console.log(`User will be set to null`);
+        } else {
+          console.log(`User '${user.displayName}' is logged in now!`, user);
+          console.log(`UPDATE Current User!!!`);
         }
-        console.log(`User '${user.displayName}' is logged in now!`, user);
-        console.log(`UPDATE Current User!!!`);
         setCurrentUser(user);
       },
       error: (error) => {

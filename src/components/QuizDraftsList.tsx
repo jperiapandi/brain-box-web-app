@@ -27,6 +27,7 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
   useEffect(() => {
     //Load Drafts from Firebase
     if (user) {
+      setLoading(true);
       const q = query(
         collection(getFirestore(), "quiz-drafts"),
         where("author_uid", "==", user.uid)
@@ -42,6 +43,7 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
         },
         error: (error) => {
           console.error(error);
+          setLoading(false);
         },
       });
 
@@ -50,6 +52,7 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
       };
     } else {
       setLoading(false);
+      setDrafts([]);
     }
   }, [user]);
 
@@ -74,7 +77,7 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
   if (drafts.length == 0) {
     return null;
   }
-  
+
   return (
     <section className="section-quiz-drafts">
       {loading ? (

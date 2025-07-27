@@ -70,7 +70,7 @@ const SignInSection: React.FunctionComponent<AuthSectionProps> = ({
   const [password, setPassword] = useState("");
   const [progressState, setProgressState] = useState(false);
   const [errorState, setShowErrorState] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setShowErrorState(false);
     setProgressState(false);
@@ -95,6 +95,8 @@ const SignInSection: React.FunctionComponent<AuthSectionProps> = ({
 
       setShowErrorState(false);
       setProgressState(false);
+
+      navigate(HOME_PAGE_PATH);
     } catch (err) {
       console.error(err);
       setShowErrorState(true);
