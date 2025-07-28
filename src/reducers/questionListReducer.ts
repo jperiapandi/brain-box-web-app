@@ -4,6 +4,7 @@ import {
   type QuestionModel,
 } from "../types/questionTypes";
 
+export const SET_QUESTIONS_FROM_DB = "set-questions-from-db";
 export const CREATE_QUESTION = "add-question";
 export const REMOVE_QUESTION = "remove-question";
 export const UPDATE_QUESTION = "update-question-type";
@@ -12,6 +13,7 @@ type QuestionListAction = {
   type: string;
   id?: string;
   question?: QuestionModel;
+  questionsFromDb?: QuestionModel[];
 };
 
 const questionListReducer: React.Reducer<
@@ -22,6 +24,11 @@ const questionListReducer: React.Reducer<
 
   let updatedQuestions: QuestionModel[] = [];
   switch (action.type) {
+    case SET_QUESTIONS_FROM_DB:
+      if (action.questionsFromDb) {
+        updatedQuestions = action.questionsFromDb;
+      }
+      break;
     case CREATE_QUESTION:
       {
         //Create a new Question Object and add it to the list of questions.

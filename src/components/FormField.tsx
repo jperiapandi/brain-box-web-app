@@ -77,6 +77,7 @@ const FormField: React.FunctionComponent<FormFieldProps> = ({
       formElm = (
         <textarea
           id={id}
+          value={value} 
           onChange={handleTextareaChange}
           placeholder={placeHolder}
         />
@@ -90,7 +91,7 @@ const FormField: React.FunctionComponent<FormFieldProps> = ({
       break;
     case "select":
       formElm = (
-        <select name="options" id={id} onChange={handleSelectChange}>
+        <select name="options" id={id} onChange={handleSelectChange} value={value}>
           {options?.map((o) => {
             return (
               <option value={o.value} key={o.value}>

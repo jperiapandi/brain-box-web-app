@@ -3,6 +3,7 @@ import PageHeader from "../../components/headers/PageHeader";
 import FormField from "../../components/FormField";
 import {
   useContext,
+  useEffect,
   useReducer,
   useState,
   type MouseEventHandler,
@@ -11,22 +12,29 @@ import QuestionEditor from "../../components/QuestionEditor";
 import questionListReducer, {
   CREATE_QUESTION,
   REMOVE_QUESTION,
+  SET_QUESTIONS_FROM_DB,
   UPDATE_QUESTION,
 } from "../../reducers/questionListReducer";
 import { Q_TYPE_UNKNOWN } from "../../types/questionTypes";
 import {
   addDoc,
   collection,
+  doc,
   DocumentReference,
+  getDoc,
   getFirestore,
   serverTimestamp,
   setDoc,
   type DocumentData,
 } from "firebase/firestore";
 import { UserContext } from "../../contexts/UserContext";
+import { useParams } from "react-router";
 
 const CreateQuizPage: React.FunctionComponent = () => {
+  const params = useParams();
   const user = useContext(UserContext);
+  const pageTitle = params.id == undefined ? "New Quiz" : "Edit Quiz";
+
   const [questions, dispatch] = useReducer(questionListReducer, []);
   const [quizTitle, setQuizTitle] = useState("");
   const [quizDesc, setQuizDesc] = useState("");
@@ -120,10 +128,42 @@ const CreateQuizPage: React.FunctionComponent = () => {
     }
   };
 
+  useEffect(() => {
+    if (user == null) {
+      //Component is loaded but user.
+      return;
+    }
+    if (params.id) {
+      console.log(`EDIT Quiz Draft`);
+
+      //Edit Mode
+      const quizdraftDocRef = doc(getFirestore(), `quiz-drafts/${params.id}`);
+
+      //
+      getDoc(quizdraftDocRef)
+        .then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            setDocRef(quizdraftDocRef);
+            setQuizTitle(docSnapshot.get("title"));
+            setQuizDesc(docSnapshot.get("desc"));
+            dispatch({
+              type: SET_QUESTIONS_FROM_DB,
+              questionsFromDb: docSnapshot.get("questions"),
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      //Create Mode
+      console.log(`Create Quiz Draft`);
+    }
+  }, [user]);
+
   return (
     <>
-      <PageHeader title="New Quiz" navBack={true}></PageHeader>
-
+      <PageHeader title={pageTitle} navBack={true}></PageHeader>
       <main className="page-content">
         <div className="create-quiz-form">
           <div>
@@ -148,9 +188,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
             id="quiz-desc"
             value={quizDesc}
             placeHolder="Describe this quiz."
-            onChange={(v) => {
-              setQuizDesc(v);
-            }}
+            onChange={setQuizDesc}
           ></FormField>
 
           <section className="questions">

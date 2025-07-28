@@ -4,7 +4,6 @@ import AuthPage from "./pages/AuthPage";
 import CreateQuizPage from "./pages/CreateQuizPage";
 import ViewQuizPage from "./pages/ViewQuizPage";
 import App from "../App";
-import EditQuizPage from "./pages/EditQuizPage";
 import ProfilePage from "./pages/ProfilePage";
 
 export const HOME_PAGE_PATH = "/";
@@ -37,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: EDIT_QUIZ_PAGE_PATH,
-        Component: EditQuizPage,
+        Component: CreateQuizPage,
       },
       {
         path: PROFILE_PAGE_PATH,

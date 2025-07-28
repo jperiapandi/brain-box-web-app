@@ -17,7 +17,9 @@ type QuizDraftsListProps = PropsWithChildren & {
   onEdit: (quizDraftId: string) => void;
 };
 
-const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
+const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = ({
+  onEdit,
+}) => {
   const user = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [drafts, setDrafts] = useState<
@@ -74,6 +76,10 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
     });
   }
 
+  if (user == null) {
+    return null;
+  }
+
   if (drafts.length == 0) {
     return null;
   }
@@ -89,7 +95,14 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = () => {
           <div className="drafts-list">
             {drafts.map((draft) => {
               return (
-                <div key={draft.id} className="draft-item">
+                <div
+                  key={draft.id}
+                  className="draft-item"
+                  onClick={(evt) => {
+                    evt.stopPropagation();
+                    onEdit(draft.id);
+                  }}
+                >
                   <h1>{draft.get("title")}</h1>
 
                   <div className="label-value-pair">

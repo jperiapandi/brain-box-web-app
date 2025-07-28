@@ -5,19 +5,27 @@ import QuizDraftsList from "../../components/QuizDraftsList";
 import { useContext, useRef, type MouseEventHandler } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router";
-import { AUTH_PAGE_PATH, CREATE_QUIZ_PAGE_PATH } from "../router";
+import {
+  AUTH_PAGE_PATH,
+  CREATE_QUIZ_PAGE_PATH,
+  EDIT_QUIZ_PAGE_PATH,
+} from "../router";
 import LoginDialog, { type ModalRef } from "../../components/LoginDialog";
 import WelcomeUser from "../../components/WelcomeUser";
+import { ClaimsContext } from "../../contexts/ClaimsContext";
 
 const HomePage: React.FunctionComponent = () => {
   //Hooks
   const user = useContext(UserContext);
+  const claims = useContext(ClaimsContext);
+
   const navigate = useNavigate();
   //States
   const loginModal = useRef<ModalRef>(null);
   //Const
   const handleDraftEdit = (quizDraftId: string) => {
     console.log(`Start editing ${quizDraftId}`);
+    navigate(EDIT_QUIZ_PAGE_PATH.replace(":id", quizDraftId));
   };
 
   const handleCreateQuizClick: MouseEventHandler = (evt) => {
@@ -45,6 +53,11 @@ const HomePage: React.FunctionComponent = () => {
 
         <WelcomeUser />
         <QuizDraftsList onEdit={handleDraftEdit} />
+        {claims?.admin == true && (
+          <>
+            <h1>You are an ADMIN!!!</h1>
+          </>
+        )}
       </main>
 
       <footer className="page-footer">
