@@ -4,7 +4,6 @@ import {
   onSnapshot,
   query,
   QueryDocumentSnapshot,
-  Timestamp,
   where,
   type DocumentData,
 } from "firebase/firestore";
@@ -12,6 +11,8 @@ import type React from "react";
 import { useContext, useEffect, useState, type PropsWithChildren } from "react";
 
 import { UserContext } from "../contexts/UserContext";
+import DraftListItem from "./DraftListItem";
+import type { Draft } from "../types/draft";
 
 type QuizDraftsListProps = PropsWithChildren & {
   onEdit: (quizDraftId: string) => void;
@@ -58,24 +59,6 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = ({
     }
   }, [user]);
 
-  //TODO - Move the following function to a separate js file
-  function getFormattedDate(timestamp: Timestamp) {
-    if (!timestamp) {
-      return "";
-    }
-    if (isNaN(timestamp.toDate().getTime())) {
-      return "";
-    }
-    return timestamp.toDate().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-  }
-
   if (user == null) {
     return null;
   }
@@ -93,31 +76,20 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = ({
           <h1 className="section-title">Quiz Drafts - created by you.</h1>
 
           <div className="drafts-list">
-            {drafts.map((draft) => {
+            {drafts.map((draftDoc) => {
+              const draft = draftDoc.data() as Draft;
               return (
-                <div
-                  key={draft.id}
-                  className="draft-item"
-                  onClick={(evt) => {
+                <DraftListItem
+                  key={draftDoc.id}
+                  title={draft.title}
+                  createdAt={draft.createdAt}
+                  updatedAt={draft.updatedAt}
+                  status={draft.status}
+                  onEditClick={(evt) => {
                     evt.stopPropagation();
-                    onEdit(draft.id);
+                    onEdit(draftDoc.id);
                   }}
-                >
-                  <h1>{draft.get("title")}</h1>
-
-                  <div className="label-value-pair">
-                    <span>Created:</span>
-                    <span>
-                      {getFormattedDate(draft.get("createdAt") as Timestamp)}
-                    </span>
-                  </div>
-                  <div className="label-value-pair">
-                    <span>Last updated:</span>
-                    <span>
-                      {getFormattedDate(draft.get("updatedAt") as Timestamp)}
-                    </span>
-                  </div>
-                </div>
+                />
               );
             })}
           </div>

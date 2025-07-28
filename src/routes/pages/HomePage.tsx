@@ -53,9 +53,14 @@ const HomePage: React.FunctionComponent = () => {
 
         <WelcomeUser />
         <QuizDraftsList onEdit={handleDraftEdit} />
+        {claims?.superAdmin == true && (
+          <>
+            <p>You are a Super Admin!!!</p>
+          </>
+        )}
         {claims?.admin == true && (
           <>
-            <h1>You are an ADMIN!!!</h1>
+            <p>You are an Admin!</p>
           </>
         )}
       </main>

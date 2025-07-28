@@ -17,6 +17,7 @@ function App() {
         if (user == null) {
           console.log(`No one is logged in.`);
           console.log(`User will be set to null`);
+          setCurrentClaims(null);
           return;
         }
         console.log(`User '${user.displayName}' is logged in now!`);
@@ -24,7 +25,10 @@ function App() {
         try {
           //Get claims
           const idTokenResult = await user.getIdTokenResult();
-          setCurrentClaims({ admin: idTokenResult.claims.admin == true });
+          setCurrentClaims({
+            admin: idTokenResult.claims.admin == true,
+            superAdmin: idTokenResult.claims.superAdmin == true,
+          });
         } catch (error) {
           console.error(error);
         }

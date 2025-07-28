@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useReducer,
+  useRef,
   useState,
   type MouseEventHandler,
 } from "react";
@@ -29,6 +30,7 @@ import {
 } from "firebase/firestore";
 import { UserContext } from "../../contexts/UserContext";
 import { useParams } from "react-router";
+import Toast, { type ToastRef } from "../../components/Toast";
 
 const CreateQuizPage: React.FunctionComponent = () => {
   const params = useParams();
@@ -39,6 +41,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
   const [quizTitle, setQuizTitle] = useState("");
   const [quizDesc, setQuizDesc] = useState("");
 
+  const toastRef = useRef<ToastRef>(null);
   const [docRef, setDocRef] =
     useState<DocumentReference<DocumentData, DocumentData>>(); // Firestore Doc Ref to the Quiz
 
@@ -103,6 +106,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
         questions: questions,
         author_uid: user.uid,
         isAnonymous: user.isAnonymous,
+        status: "draft",
       };
 
       if (!docRef) {
@@ -117,11 +121,13 @@ const CreateQuizPage: React.FunctionComponent = () => {
         );
         console.log(`New Quiz is created in Firestore. `, nDocRef, nDocRef.id);
         setDocRef(nDocRef);
+        toastRef.current?.showToast("New quiz draft is created and saved.");
       } else {
         //Update the existing document
         quizDoc.updatedAt = serverTimestamp();
         await setDoc(docRef, quizDoc, { merge: true });
         console.log(`Existing Quiz is updated.`);
+        toastRef.current?.showToast("Quiz data changes are saved.");
       }
     } else {
       throw new Error(`Quiz Form has some errors. Please fix them.`);
@@ -164,6 +170,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
   return (
     <>
       <PageHeader title={pageTitle} navBack={true}></PageHeader>
+      <Toast ref={toastRef} />
       <main className="page-content">
         <div className="create-quiz-form">
           <div>
