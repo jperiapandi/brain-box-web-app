@@ -498,7 +498,8 @@ footer.page-footer {
 .two-controls {
   display: flex;
   align-items: center;
-
+  gap: 1rem;
+  
   > :first-child {
     flex-grow: 1;
   }

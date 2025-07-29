@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useReducer,
-  useState,
-  type PropsWithChildren,
-} from "react";
+import { useEffect, useReducer, useState, type PropsWithChildren } from "react";
 import type React from "react";
 import {
   Q_TYPE_UNKNOWN,
@@ -33,7 +28,7 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
   sn,
   question,
   onRemove,
-  onChange
+  onChange,
 }) => {
   const [curQuestion, dispatch] = useReducer(questionReducer, question);
 
@@ -48,6 +43,10 @@ const QuestionEditor: React.FunctionComponent<QuestionEditorProps> = ({
   }, [debouncedQText]);
 
   useEffect(() => {
+    if (curQuestion == question) {
+      // console.log(`No CHANGES !!!`);
+      return;
+    }
     onChange(curQuestion);
   }, [curQuestion]);
 
