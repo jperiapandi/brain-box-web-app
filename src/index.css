@@ -580,12 +580,48 @@ footer.page-footer {
     flex: 1;
   }
 
-  >:nth-child(2){
+  > :nth-child(2) {
     flex: 1;
   }
 
-  .author-label{
+  .author-label {
     font-size: 0.75rem;
+  }
+}
+
+.review-quiz-container {
+  .label-value-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+    label {
+      font-size: 0.8rem;
+    }
+
+    .value {
+      font-size: 1rem;
+    }
+  }
+
+  .quiz-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+  .question-text {
+    font-weight: 400;
+  }
+
+  .question-container {
+    padding: 1rem 0;
+  }
+}
+.review-quiz-footer {
+  display: flex;
+  gap: 1rem;
+
+  padding: 0 1rem;
+  > * {
+    flex: 1;
   }
 }
 
