@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { QUIZ_STATUS_DRAFT, QUIZ_STATUS_SUBMITTED } from "../types/quizDraft";
 import {
   collection,
-  doc,
   type DocumentData,
   getFirestore,
   onSnapshot,
