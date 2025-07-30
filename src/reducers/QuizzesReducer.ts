@@ -1,19 +1,19 @@
-import type { Quiz } from "../types/quiz";
+import type { QuizItem } from "../types/quiz";
 // import type { AnyActionArg } from "react";
 export const SET_QUIZZES = "setQuizzes";
 export const SET_QUIZZES_TO_EMPTY = "setQuizzesToEmpty";
 
 export type QuizzesAction = {
   type: string;
-  quizzes?: Quiz[];
+  quizzes?: QuizItem[];
 };
 
-const quizzesReducer: React.Reducer<Quiz[], QuizzesAction> = (
+const quizzesReducer: React.Reducer<QuizItem[], QuizzesAction> = (
   prevState,
   action
 ) => {
   console.log(`quizzesReducer -> Action: ${action.type}`);
-  let updatedState: Quiz[] = prevState;
+  let updatedState: QuizItem[] = prevState;
 
   switch (action.type) {
     case SET_QUIZZES:

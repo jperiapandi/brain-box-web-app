@@ -7,11 +7,41 @@ export type Answer = {
   checked: boolean;
 };
 
+export type QToAnswers = {
+  questionId: string;
+  correctAnswers: string[];
+};
+
+export type QuizAnswersDoc = {
+  answers: QToAnswers[];
+};
+
 export type QuestionModel = {
   id: string;
   questionText: string;
   type: string;
   answersMap: { [key: string]: Answer[] };
+};
+
+export type QuestionQuizView = {
+  id: string;
+  questionText: string;
+  type: string;
+  availableAnswers: string[];
+};
+//Readonly question data to show in UI, not in forms
+export type Question = {
+  id: string;
+  questionText: string;
+  type: string;
+  answers: Answer[];
+};
+
+export type QuestionReview = {
+  id: string;
+  questionText: string;
+  type: string;
+  answers: Answer[];
 };
 
 export const Q_TYPE_UNKNOWN = "unknown_question_type";
@@ -42,6 +72,15 @@ export const SupportedQuestionTypes: SelectOption[] = [
     label: "Multiple Choice",
   },
 ];
+
+export function getQuestionTypeLabel(qType: string): string {
+  return (
+    SupportedQuestionTypes.find((q) => {
+      return q.value === qType;
+    })?.label || ""
+  );
+}
+
 export function createAnswer(value: string): Answer {
   return {
     id: uuidv4(),

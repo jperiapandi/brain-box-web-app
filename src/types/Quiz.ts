@@ -1,8 +1,33 @@
-export type Quiz = {
-  id: string;
+import type { FieldValue, Timestamp } from "firebase/firestore";
+import type { QuestionQuizView, QuestionReview } from "./questionTypes";
 
+export type QuizDoc = {
   title: string;
   desc: string;
+  author: string;
+  isAnonymous: boolean;
+
   approved: boolean;
-  approvedOn: Date;
+  approvedAt: FieldValue;
+  approver: string;
+  approver_uid: string;
+
+  questions: QuestionQuizView[];
+};
+
+export type QuizItem = {
+  id: string;
+  title: string;
+  desc: string;
+  author: string;
+  approvedAt: Timestamp;
+};
+export type QuizReview = {
+  title: string;
+  desc: string;
+  author: string;
+  isAnonymous: boolean;
+  createdAt: Timestamp;
+  submittedAt: Timestamp;
+  questions: QuestionReview[];
 };

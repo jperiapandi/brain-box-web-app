@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import type { Quiz } from "../types/quiz";
+import type { QuizItem } from "../types/quiz";
 
-export const QuizzesContext = createContext<Quiz[]>([]);
+export const QuizzesContext = createContext<QuizItem[]>([]);

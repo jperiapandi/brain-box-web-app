@@ -305,20 +305,6 @@ footer.page-footer {
 
     /* justify-content: space-between; */
     align-items: center;
-
-    .sn {
-      font-weight: bold;
-      font-size: 1.25rem;
-      background-color: rgb(230, 236, 255);
-      color: rgb(40, 48, 72);
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   }
 
   .answers-container {
@@ -362,6 +348,20 @@ footer.page-footer {
       }
     }
   }
+}
+
+.sn {
+  font-weight: bold;
+  font-size: 1.25rem;
+  background-color: rgb(230, 236, 255);
+  color: rgb(40, 48, 72);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .close-btn,

@@ -12,7 +12,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import type { Quiz } from "../types/quiz";
+import type { QuizItem } from "../types/quiz";
 
 const QuizzesProvider: React.FunctionComponent<PropsWithChildren> = ({
   children,
@@ -37,12 +37,15 @@ const QuizzesProvider: React.FunctionComponent<PropsWithChildren> = ({
           });
         } else {
           //Quizzes loaded successfully
-          const result: Quiz[] = [];
-          querySnapshot.forEach((doc) => {
-            result.push({
-              ...doc.data(),
+
+          const result: QuizItem[] = querySnapshot.docs.map((doc) => {
+            return {
               id: doc.id,
-            } as Quiz);
+              title: doc.get("title"),
+              desc: doc.get("desc"),
+              author: doc.get("author"),
+              approvedAt: doc.get("approvedAt"),
+            };
           });
 
           dispatch({
