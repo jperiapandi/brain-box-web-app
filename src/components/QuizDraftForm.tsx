@@ -5,7 +5,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import type React from "react";
-import type { QuizDraft } from "../types/quizDraft";
+import { QUIZ_STATUS_DRAFT, type QuizDraft } from "../types/quizDraft";
 import FormField from "./FormField";
 import QuestionEditor from "./QuestionEditor";
 import quizDraftReducer, {
@@ -112,10 +112,10 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
         dispatch({
           type: DRAFT_CHANGE_STATUS,
           dataToUpdate: {
-            status: "draft",
+            status: QUIZ_STATUS_DRAFT,
           },
         });
-      } else if (updatedDraft.status == "draft") {
+      } else if (updatedDraft.status == QUIZ_STATUS_DRAFT) {
         if (curDocId === "" || curDocId == undefined || curDocId == null) {
           throw new Error("docId is missing. Can not update this in DB.");
         }
@@ -138,7 +138,7 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
         throw new Error("docId is missing. Can not update this in DB.");
       }
       console.log(`----SUBMIT Quiz to Firestore----`);
-      await submitQuizDraft(curDocId, updatedDraft);
+      await submitQuizDraft(curDocId, dirty, updatedDraft);
       setDirty(false);
       onSubmitSuccess?.();
     } catch (error) {
@@ -147,7 +147,6 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
   };
   const handleCancelClick: MouseEventHandler<HTMLButtonElement> = (evt) => {
     evt.stopPropagation();
-    console.log(`----CANCEL----`);
     setDirty(false);
     onCancel?.();
   };
@@ -155,7 +154,7 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
   const saveDisabled = dirty === false;
 
   return (
-    <div className="create-quiz-form">
+    <div className="quiz-edit-form">
       <div>
         <div>
           <span>Author:</span> <span>{updatedDraft.author}</span>
@@ -213,7 +212,7 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
         </div>
       </section>
 
-      <footer className="two-controls">
+      <footer>
         <button className="btn" onClick={handleCancelClick}>
           Cancel
         </button>

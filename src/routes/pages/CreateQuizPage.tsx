@@ -7,7 +7,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 import Toast, { type ToastRef } from "../../components/Toast";
 import QuizDraftForm from "../../components/QuizDraftForm";
-import { type QuizDraft } from "../../types/quizDraft";
+import { QUIZ_STATUS_NEW, type QuizDraft } from "../../types/quizDraft";
 import { useNavigate } from "react-router";
 
 const CreateQuizPage: React.FunctionComponent = () => {
@@ -26,7 +26,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
         author: user.displayName ?? "UNKNOWN",
         author_uid: user.uid,
         isAnonymous: user.isAnonymous,
-        status: "new",
+        status: QUIZ_STATUS_NEW,
       });
     }
   }, [user]);
@@ -40,6 +40,7 @@ const CreateQuizPage: React.FunctionComponent = () => {
   };
   const handleSubmitSuccess = () => {
     toastRef.current?.showToast("Quiz submitted successfully.");
+    navigate(-1);
   };
 
   const handleErrors = (error: Error) => {

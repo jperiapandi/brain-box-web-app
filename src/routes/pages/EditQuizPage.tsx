@@ -71,7 +71,8 @@ const EditQuizPage: React.FunctionComponent = () => {
   };
 
   const handleSubmitSuccess = () => {
-    toastRef.current?.showToast("Quiz submitted successfully.");
+    // toastRef.current?.showToast("Quiz submitted successfully.");
+    navigate(-1);
   };
 
   const handleErrors = (error: Error) => {

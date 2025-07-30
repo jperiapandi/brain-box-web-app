@@ -12,7 +12,6 @@ import { useContext, useEffect, useState, type PropsWithChildren } from "react";
 
 import { UserContext } from "../contexts/UserContext";
 import DraftListItem from "./DraftListItem";
-import type { Draft } from "../types/draft";
 
 type QuizDraftsListProps = PropsWithChildren & {
   onEdit: (quizDraftId: string) => void;
@@ -77,13 +76,14 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = ({
 
           <div className="drafts-list">
             {drafts.map((draftDoc) => {
-              const draft = draftDoc.data() as Draft;
+              const draft = draftDoc.data();
               return (
                 <DraftListItem
                   key={draftDoc.id}
                   title={draft.title}
                   createdAt={draft.createdAt}
                   updatedAt={draft.updatedAt}
+                  submittedAt={draft.submittedAt}
                   status={draft.status}
                   onEditClick={(evt) => {
                     evt.stopPropagation();

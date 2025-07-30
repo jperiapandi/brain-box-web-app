@@ -5,8 +5,13 @@ import {
   getFirestore,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
-import type { QuizDraft } from "../types/quizDraft";
+import {
+  QUIZ_STATUS_DRAFT,
+  QUIZ_STATUS_SUBMITTED,
+  type QuizDraft,
+} from "../types/quizDraft";
 import { Q_TYPE_UNKNOWN } from "../types/questionTypes";
 
 const validateQuizDraft = (data: QuizDraft) => {
@@ -55,6 +60,7 @@ export const saveQuizDraft = (data: QuizDraft) => {
       validateQuizDraft(data);
 
       //Set createdAt timestamp
+      data.status = QUIZ_STATUS_DRAFT;
       data.createdAt = serverTimestamp();
       data.updatedAt = serverTimestamp();
 
@@ -87,14 +93,31 @@ export const updateQuizDraft = (quizDraftId: string, data: QuizDraft) => {
     }
   });
 };
-export const submitQuizDraft = (quizDraftId: string, data: QuizDraft) => {
+export const submitQuizDraft = (
+  quizDraftId: string,
+  isDirty: boolean,
+  data: QuizDraft
+) => {
   return new Promise<void>(async (resolve, reject) => {
-    const docRef = doc(getFirestore(), `quiz-drafts/${quizDraftId}`);
     try {
-      console.log(`Submit the doc ${docRef}`);
+      const docRef = doc(getFirestore(), `quiz-drafts/${quizDraftId}`);
       validateQuizDraft(data);
-      //TODO
-      // await setDoc(docRef, d, { merge: true });
+      if (isDirty) {
+        //Save the doc
+        const dataToUpdate: QuizDraft = {
+          ...data,
+          status: QUIZ_STATUS_SUBMITTED,
+          submittedAt: serverTimestamp(),
+        };
+        await setDoc(docRef, dataToUpdate, { merge: true });
+      } else {
+        //Just update the field 'status' value to 'submitted'
+        await updateDoc(docRef, {
+          status: QUIZ_STATUS_SUBMITTED,
+          submittedAt: serverTimestamp(),
+        });
+      }
+
       resolve();
     } catch (error) {
       reject(error);
