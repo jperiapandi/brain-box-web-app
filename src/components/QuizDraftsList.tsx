@@ -12,6 +12,7 @@ import { useContext, useEffect, useState, type PropsWithChildren } from "react";
 
 import { UserContext } from "../contexts/UserContext";
 import DraftListItem from "./DraftListItem";
+import { COLXN_QUIZ_DRAFTS } from "../types/constants";
 
 type QuizDraftsListProps = PropsWithChildren & {
   onEdit: (quizDraftId: string) => void;
@@ -31,7 +32,7 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = ({
     if (user) {
       setLoading(true);
       const q = query(
-        collection(getFirestore(), "quiz-drafts"),
+        collection(getFirestore(), COLXN_QUIZ_DRAFTS),
         where("author_uid", "==", user.uid)
       );
       const unsubscribe = onSnapshot(q, {

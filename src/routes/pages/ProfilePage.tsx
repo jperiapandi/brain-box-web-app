@@ -12,6 +12,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { COLXN_QUIZ_DRAFTS } from "../../types/constants";
 
 const ProfilePage: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const ProfilePage: React.FunctionComponent = () => {
   useEffect(() => {
     if (user) {
       const q = query(
-        collection(getFirestore(), "quiz-drafts"),
+        collection(getFirestore(), COLXN_QUIZ_DRAFTS),
         where("author_uid", "==", user.uid)
       );
       getCountFromServer(q)

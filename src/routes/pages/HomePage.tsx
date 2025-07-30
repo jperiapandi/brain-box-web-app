@@ -13,6 +13,7 @@ import {
 import LoginDialog, { type ModalRef } from "../../components/LoginDialog";
 import WelcomeUser from "../../components/WelcomeUser";
 import { ClaimsContext } from "../../contexts/ClaimsContext";
+import SubmittedQuizDrafts from "../../components/SubmittedQuizDrafts";
 
 const HomePage: React.FunctionComponent = () => {
   //Hooks
@@ -53,14 +54,14 @@ const HomePage: React.FunctionComponent = () => {
 
         <WelcomeUser />
         <QuizDraftsList onEdit={handleDraftEdit} />
+        {claims?.admin == true && (
+          <>
+            <SubmittedQuizDrafts />
+          </>
+        )}
         {claims?.superAdmin == true && (
           <>
             <p>You are a Super Admin!!!</p>
-          </>
-        )}
-        {claims?.admin == true && (
-          <>
-            <p>You are an Admin!</p>
           </>
         )}
       </main>

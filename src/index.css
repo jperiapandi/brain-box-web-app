@@ -567,6 +567,28 @@ footer.page-footer {
 
   filter: drop-shadow(1px 5px 5px hsla(0, 10%, 10%, 0.47));
 }
+
+.submitted-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.5rem;
+
+  border-bottom: solid thin lightcoral;
+
+  > :first-child {
+    flex: 1;
+  }
+
+  >:nth-child(2){
+    flex: 1;
+  }
+
+  .author-label{
+    font-size: 0.75rem;
+  }
+}
+
 @media only screen and (min-width: 660px) {
   .questions-panel {
     display: grid;

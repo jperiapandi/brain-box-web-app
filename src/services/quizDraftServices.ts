@@ -13,6 +13,7 @@ import {
   type QuizDraft,
 } from "../types/quizDraft";
 import { Q_TYPE_UNKNOWN } from "../types/questionTypes";
+import { COLXN_QUIZ_DRAFTS } from "../types/constants";
 
 const validateQuizDraft = (data: QuizDraft) => {
   const hasValidTitle = data.title.trim() != "";
@@ -66,7 +67,7 @@ export const saveQuizDraft = (data: QuizDraft) => {
 
       //Create a new Doc in Firestore collection 'quiz-drafts'
       const nDocRef = await addDoc(
-        collection(getFirestore(), "quiz-drafts"),
+        collection(getFirestore(), COLXN_QUIZ_DRAFTS),
         data
       );
       console.log(`New Quiz is created in Firestore. `, nDocRef, nDocRef.id);
