@@ -1,3 +1,5 @@
+/** Theme : http://material-foundation.github.io/material-theme-builder/?primary=%237F07FF&bodyFont=Noto+Sans&displayFont=Noto+Sans&colorMatch=false **/
+
 /** Google Noto Font & Icons **/
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
@@ -11,6 +13,8 @@
   font-variation-settings: "wdth" 100;
   /* -webkit-font-smoothing: antialiased; */
   /* -moz-osx-font-smoothing: grayscale; */
+
+  box-sizing: border-box;
 }
 .material-symbols-rounded {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
@@ -18,31 +22,55 @@
 /* End of Google Font & Icon Setup */
 
 :root {
-  --primary-color: light-dark(hsl(303, 100%, 49%), hsl(303, 93%, 12%));
-  --on-primary: hsl(0, 0%, 90%);
-
-  --btn-default: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 50%));
-  --btn-default-hover: light-dark(hsl(0, 0%, 95%), hsl(0, 0%, 57%));
-  --on-btn-default: light-dark(hsl(0, 0%, 0%), hsl(0, 0%, 93%));
-  --on-btn-default-hover: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 100%));
-
-  --btn-primary: light-dark(hsl(224, 100%, 50%), hsl(222, 80%, 27%));
-  --btn-primary-hover: light-dark(hsl(217, 100%, 55%), hsl(216, 38%, 42%));
-  --on-btn-primary: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 89%));
-  --on-btn-primary-hover: light-dark(hsl(0, 0%, 97%), hsl(0, 0%, 100%));
-
-  --btn-secondary: light-dark(hsl(57, 100%, 50%), hsl(57, 100%, 39%));
-  --btn-secondary-hover: light-dark(hsl(60, 86%, 88%), hsl(57, 97%, 71%));
-  --on-btn-secondary: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 15%));
-  --on-btn-secondary-hover: light-dark(hsl(0, 10%, 20%), hsl(0, 0%, 20%));
-
-  --btn-logout: light-dark(hsl(14, 100%, 50%), hsl(14, 100%, 39%));
-  --btn-logout-hover: light-dark(hsl(26, 100%, 50%), hsl(57, 97%, 71%));
-  --on-btn-logout: light-dark(hsl(0, 0%, 89%), hsl(0, 0%, 15%));
-  --on-btn-logout-hover: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 20%));
-
-  --surface-1-color: hsl(304, 100%, 97%);
-  --on-surface-1: hsl(303, 58%, 35%);
+  --md-sys-color-primary: rgb(105 84 141);
+  --md-sys-color-surface-tint: rgb(105 84 141);
+  --md-sys-color-on-primary: rgb(255 255 255);
+  --md-sys-color-primary-container: rgb(236 220 255);
+  --md-sys-color-on-primary-container: rgb(81 60 115);
+  --md-sys-color-secondary: rgb(99 91 112);
+  --md-sys-color-on-secondary: rgb(255 255 255);
+  --md-sys-color-secondary-container: rgb(234 222 247);
+  --md-sys-color-on-secondary-container: rgb(75 67 87);
+  --md-sys-color-tertiary: rgb(127 82 92);
+  --md-sys-color-on-tertiary: rgb(255 255 255);
+  --md-sys-color-tertiary-container: rgb(255 217 224);
+  --md-sys-color-on-tertiary-container: rgb(100 59 69);
+  --md-sys-color-error: rgb(186 26 26);
+  --md-sys-color-on-error: rgb(255 255 255);
+  --md-sys-color-error-container: rgb(255 218 214);
+  --md-sys-color-on-error-container: rgb(147 0 10);
+  --md-sys-color-background: rgb(254 247 255);
+  --md-sys-color-on-background: rgb(29 26 32);
+  --md-sys-color-surface: rgb(254 247 255);
+  --md-sys-color-on-surface: rgb(29 26 32);
+  --md-sys-color-surface-variant: rgb(232 224 235);
+  --md-sys-color-on-surface-variant: rgb(73 69 78);
+  --md-sys-color-outline: rgb(122 117 127);
+  --md-sys-color-outline-variant: rgb(203 196 207);
+  --md-sys-color-shadow: rgb(0 0 0);
+  --md-sys-color-scrim: rgb(0 0 0);
+  --md-sys-color-inverse-surface: rgb(50 47 53);
+  --md-sys-color-inverse-on-surface: rgb(245 238 247);
+  --md-sys-color-inverse-primary: rgb(212 187 252);
+  --md-sys-color-primary-fixed: rgb(236 220 255);
+  --md-sys-color-on-primary-fixed: rgb(36 14 69);
+  --md-sys-color-primary-fixed-dim: rgb(212 187 252);
+  --md-sys-color-on-primary-fixed-variant: rgb(81 60 115);
+  --md-sys-color-secondary-fixed: rgb(234 222 247);
+  --md-sys-color-on-secondary-fixed: rgb(31 24 42);
+  --md-sys-color-secondary-fixed-dim: rgb(206 194 219);
+  --md-sys-color-on-secondary-fixed-variant: rgb(75 67 87);
+  --md-sys-color-tertiary-fixed: rgb(255 217 224);
+  --md-sys-color-on-tertiary-fixed: rgb(50 16 26);
+  --md-sys-color-tertiary-fixed-dim: rgb(241 183 195);
+  --md-sys-color-on-tertiary-fixed-variant: rgb(100 59 69);
+  --md-sys-color-surface-dim: rgb(222 216 224);
+  --md-sys-color-surface-bright: rgb(254 247 255);
+  --md-sys-color-surface-container-lowest: rgb(255 255 255);
+  --md-sys-color-surface-container-low: rgb(248 241 249);
+  --md-sys-color-surface-container: rgb(243 236 244);
+  --md-sys-color-surface-container-high: rgb(237 230 238);
+  --md-sys-color-surface-container-highest: rgb(231 224 232);
 }
 
 html,
@@ -50,15 +78,16 @@ body {
   color-scheme: light;
   padding: 0;
   margin: 0;
+  background-color: var(--md-sys-color-background);
 }
 
 .error {
-  color: hsl(8, 100%, 50%);
+  color: var(--md-sys-color-error);
   font-size: 0.8rem;
 }
 
 .info {
-  color: hsl(222, 100%, 50%);
+  color: var(--md-sys-color-tertiary);
   font-size: 0.8rem;
 }
 
@@ -70,31 +99,6 @@ dialog.modal {
 dialog.modal::backdrop {
   background-color: hsla(0, 0%, 0%, 0.6);
 }
-/*
-.profile-icon-btn {
-  anchor-name: --profile-btn;
-}
-
-.profile-popover {
-  border: none;
-  padding: 1rem;
-  position-anchor: --profile-btn;
-  position: fixed;
-  margin: 0;
-  inset: auto;
-  top: anchor(bottom);
-  right: anchor(right);
-  margin-block-start: 0.5rem;
-
-  filter: drop-shadow(1px 1px 2px hsl(0, 10%, 10%));
-}
-
-.profile-popover:popover-open {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-*/
 
 .btn {
   min-height: 2.5rem;
@@ -102,8 +106,8 @@ dialog.modal::backdrop {
   border: none;
   border-radius: 0.5rem;
   background: none;
-  background-color: var(--btn-default);
-  color: var(--on-btn-default);
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
   padding: 0.5rem 1rem;
   display: inline-flex;
   align-items: center;
@@ -111,12 +115,12 @@ dialog.modal::backdrop {
   gap: 0.5rem;
 
   cursor: pointer;
-  filter: drop-shadow(1px 2px 2px hsla(0, 10%, 10%, 0.502));
+  filter: drop-shadow(1px 2px 2px var(--md-sys-color-shadow));
 }
 
 .btn:hover {
-  background-color: var(--btn-default-hover);
-  color: var(--on-btn-default-hover);
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
 }
 
 .btn:disabled {
@@ -125,33 +129,33 @@ dialog.modal::backdrop {
 }
 
 .btn-primary {
-  background-color: var(--btn-primary);
-  color: var(--on-btn-primary);
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 .btn-primary:hover {
-  background-color: var(--btn-primary-hover);
-  color: var(--on-btn-primary-hover);
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 .btn-secondary {
-  background-color: var(--btn-secondary);
-  color: var(--on-btn-secondary);
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
 }
 
 .btn-secondary:hover {
-  background-color: var(--btn-secondary-hover);
-  color: var(--on-btn-secondary-hover);
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
 }
 
 .btn-logout {
-  background-color: var(--btn-logout);
-  color: var(--on-btn-logout);
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
 }
 
 .btn-logout:hover {
-  background-color: var(--btn-logout-hover);
-  color: var(--on-btn-logout-hover);
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
 }
 
 header.page-header {
@@ -189,21 +193,62 @@ header.page-header {
   padding: 1rem;
 }
 
+.quizzes-list-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
 .quiz-list-item {
-  padding: 0.5rem;
   display: flex;
+  grid-template-columns: 3rem 1fr;
+  align-items: center;
+  height: 100%;
+
+  .sn-box {
+    background-color: var(--md-sys-color-primary);
+    height: 100%;
+    width: fit-content;
+    color: var(--md-sys-color-on-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+
+    font-size: larger;
+
+    > span {
+      padding: 0 1rem;
+    }
+  }
+
+  .title-link {
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: bolder;
+  }
 
   .content-container {
+    height: 100%;
+    width: 80%;
     padding: 0.5rem;
-
+    background-color: var(--md-sys-color-primary-container);
     flex-grow: 1;
-    h1 {
-      margin: 0;
-      font-size: 1.25rem;
-    }
+
+    display: flex;
+    flex-direction: column;
+
+    color: var(--md-sys-color-on-surface-variant);
+
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 
     p {
       font-size: 0.85rem;
+      overflow: hidden;
+      flex-grow: 1;
     }
 
     .info-container {
@@ -226,9 +271,8 @@ header.page-header {
 .attribute-cmp {
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 0.75rem;
 
-  color: var(--on-surface-1);
   .material-symbols-rounded {
     font-size: 1.25rem;
   }
@@ -290,10 +334,10 @@ footer.page-footer {
 }
 
 .question-editor {
-  border: thin solid lightblue;
+  border: thin solid var(--md-sys-color-outline-variant);
   padding: 1rem 0.5rem;
-  filter: drop-shadow(1px 1px 1px hsla(0, 0%, 16%, 0.25));
-  background-color: rgb(244, 249, 255);
+  filter: drop-shadow(1px 1px 1px var(--md-sys-color-shadow));
+  background-color: var(--md-sys-color-secondary-container);
   border-radius: 0.25rem;
   display: flex;
   flex-direction: column;
@@ -331,7 +375,7 @@ footer.page-footer {
 
     h3 {
       margin: 0 0 1rem 0;
-      font-size: 0.75rem;
+      font-size: 0.95rem;
     }
 
     .selected-answers-list {
@@ -340,8 +384,10 @@ footer.page-footer {
       gap: 1rem;
 
       div {
+        /* selected answer list item bg */
         border: none;
-        background-color: hsl(201, 100%, 83%);
+        background-color: var(--md-sys-color-primary);
+        color: var(--md-sys-color-on-primary);
         border-radius: 1rem;
         font-size: 0.8rem;
         padding: 0.25rem 1.5rem;
@@ -353,8 +399,8 @@ footer.page-footer {
 .sn {
   font-weight: bold;
   font-size: 1.25rem;
-  background-color: rgb(230, 236, 255);
-  color: rgb(40, 48, 72);
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
@@ -392,24 +438,20 @@ footer.page-footer {
   flex-direction: column;
   gap: 1rem;
 
-  .section-title {
-    padding: 0;
-    margin: 0;
-    font-size: medium;
-    font-weight: 400;
-  }
-
   .drafts-list {
     display: flex;
     flex-direction: column;
-    gap: 0.125rem;
+    gap: 0.5rem;
   }
 }
 
 .draft-item {
-  background-color: var(--surface-1-color);
+  background-color: var(--md-sys-color-secondary-container);
   padding: 1rem 0;
   padding-left: 1rem;
+  border-radius: 1rem;
+
+  color: var(--md-sys-color-on-secondary-container);
 
   h1 {
     margin: 0;
@@ -638,6 +680,12 @@ footer.page-footer {
     }
   }
 
+  .quizzes-list-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
   .section-quiz-drafts {
     .drafts-list {
       display: grid;
@@ -647,6 +695,11 @@ footer.page-footer {
 }
 
 @media only screen and (min-width: 1180px) {
+  .quizzes-list-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
   .section-quiz-drafts {
     .drafts-list {
       display: grid;

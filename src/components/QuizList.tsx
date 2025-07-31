@@ -7,11 +7,18 @@ const QuizList: React.FunctionComponent = () => {
   const quizzes = useContext(QuizzesContext);
 
   return (
-    <div className="quizzes-list-container">
-      {quizzes.map((q) => {
-        return <QuizListItem quiz={q} key={q.id}></QuizListItem>;
-      })}
-    </div>
+    <>
+      {quizzes.length > 0 && (
+        <>
+          <h1>Quizzes available </h1>
+        </>
+      )}
+      <div className="quizzes-list-container">
+        {quizzes.map((q, i) => {
+          return <QuizListItem quiz={q} key={q.id} sn={i + 1}></QuizListItem>;
+        })}
+      </div>
+    </>
   );
 };
 

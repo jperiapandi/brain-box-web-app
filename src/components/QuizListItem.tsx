@@ -7,19 +7,33 @@ import { getFormattedDate } from "../utils";
 
 interface QuizListItemProps {
   quiz: QuizItem;
+  sn: number;
 }
-const QuizListItem: React.FunctionComponent<QuizListItemProps> = ({ quiz }) => {
+const QuizListItem: React.FunctionComponent<QuizListItemProps> = ({
+  quiz,
+  sn,
+}) => {
+  const maxChars = 120-3;
+  const truncatedDesc =
+    quiz.desc.length > maxChars
+      ? quiz.desc.substring(0, maxChars) + "..."
+      : quiz.desc;
+
   const quizViewPath = VIEW_QUIZ_PAGE_PATH.replace(":id", quiz.id);
   return (
     <div className="quiz-list-item">
+      <div className="sn-box">
+        <span>{sn}</span>
+      </div>
       <div className="content-container">
-        <NavLink to={quizViewPath}>{quiz.title}</NavLink>
+        <NavLink to={quizViewPath} className={"title-link"}>
+          {quiz.title}
+        </NavLink>
+        <p>{truncatedDesc}</p>
         <div className="info-container">
           <Attribute icon="person" label={quiz.author} />
           <Attribute icon="event" label={getFormattedDate(quiz.approvedAt)} />
-          {/* <Attribute icon="star" label="32" /> */}
         </div>
-        <p>{quiz.desc}</p>
       </div>
     </div>
   );

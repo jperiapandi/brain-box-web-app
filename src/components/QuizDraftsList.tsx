@@ -73,7 +73,7 @@ const QuizDraftsList: React.FunctionComponent<QuizDraftsListProps> = ({
         <div>Loading data.. please wait</div>
       ) : (
         <>
-          <h1 className="section-title">Quiz Drafts - created by you.</h1>
+          <h1>Quiz Drafts - created by you.</h1>
 
           <div className="drafts-list">
             {drafts.map((draftDoc) => {
