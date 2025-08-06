@@ -2,7 +2,7 @@ import type React from "react";
 import PageHeader from "../../components/headers/PageHeader";
 
 import QuizDraftsList from "../../components/QuizDraftsList";
-import { useContext, useRef, type MouseEventHandler } from "react";
+import { useContext, useRef} from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router";
 import {

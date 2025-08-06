@@ -192,6 +192,13 @@ header.page-header {
   padding: 1rem 0;
 }
 
+.controls-container-h-c {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  justify-content: center;
+}
+
 .quizzes-container {
   display: flex;
   flex-direction: column;
@@ -670,6 +677,34 @@ footer.page-footer {
   padding: 0 1rem;
   > * {
     flex: 1;
+  }
+}
+
+.quiz-runner {
+
+  border: thin solid var(--md-sys-color-outline-variant);
+  border-radius: 1rem;
+  padding: 1rem;
+
+  .question-container {
+    color: rebeccapurple;
+
+    .answers-list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+
+      li{
+        padding: 1rem 0;
+      }
+    }
+  }
+
+  .nav-control {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
   }
 }
 
