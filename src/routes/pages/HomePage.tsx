@@ -31,14 +31,18 @@ const HomePage: React.FunctionComponent = () => {
     navigate(EDIT_QUIZ_PAGE_PATH.replace(":id", quizDraftId));
   };
 
-  const handleCreateQuizClick: MouseEventHandler = (evt) => {
-    evt.stopPropagation();
+  const handleCreateQuizClick = () => {
     if (user == null) {
       loginModal.current?.openModal();
     } else {
       navigate(CREATE_QUIZ_PAGE_PATH);
     }
   };
+
+  const handleSignInClick = () => {
+    navigate(AUTH_PAGE_PATH);
+  };
+
   const loginToCreateQuizzes =
     "Only logged in users can create Quizzes. Please login.";
   //
@@ -54,13 +58,23 @@ const HomePage: React.FunctionComponent = () => {
           }}
         ></LoginDialog>
 
-        <WelcomeUser />
+        <WelcomeUser
+          onCreateQuizClick={handleCreateQuizClick}
+          onSignInClick={handleSignInClick}
+        />
 
         <QuizzesProvider>
           <QuizList />
         </QuizzesProvider>
 
+        {user !== null && (
+          <div className="controls-container-h">
+            <button className="btn btn-secondary" onClick={handleCreateQuizClick}>Create a Quiz</button>
+          </div>
+        )}
+
         <QuizDraftsList onEdit={handleDraftEdit} />
+
         {claims?.admin == true && (
           <>
             <SubmittedQuizDrafts />
@@ -73,13 +87,7 @@ const HomePage: React.FunctionComponent = () => {
         )}
       </main>
 
-      <footer className="page-footer">
-        <div>
-          <button onClick={handleCreateQuizClick} className="btn btn-primary">
-            Create a Quiz
-          </button>
-        </div>
-      </footer>
+      <footer className="page-footer"></footer>
     </>
   );
 };

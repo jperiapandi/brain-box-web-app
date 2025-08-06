@@ -186,6 +186,12 @@ header.page-header {
   }
 }
 
+.controls-container-h {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
 .quizzes-container {
   display: flex;
   flex-direction: column;
