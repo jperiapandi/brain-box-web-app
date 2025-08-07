@@ -100,6 +100,58 @@ dialog.modal::backdrop {
   background-color: hsla(0, 0%, 0%, 0.6);
 }
 
+dialog.base-dialog {
+  --padding: 1rem;
+  --border-radius: 1rem;
+
+  max-width: 90%;
+  border-radius: var(--border-radius);
+  .container {
+    background-color: var(--md-sys-color-surface-container);
+
+    color: var(--md-sys-color-on-surface);
+    .header {
+      display: flex;
+      align-items: center;
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+
+      padding: var(--padding);
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
+      h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 1.5rem;
+      }
+    }
+
+    .content {
+      padding: var(--padding);
+      min-height: 5rem;
+    }
+
+    .footer {
+      padding: var(--padding);
+      padding-bottom: 1rem;
+      padding-right: 1rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    border-radius: var(--border-radius);
+  }
+}
+ul.simple-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li {
+    padding: 0.5rem 0;
+  }
+}
 .btn {
   min-height: 2.5rem;
 

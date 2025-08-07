@@ -21,6 +21,7 @@ import {
   where,
 } from "firebase/firestore";
 import { COLXN_QUIZ_DRAFTS } from "../../types/constants";
+import Dialog, { type DialogRef } from "../../components/Dialog";
 
 const ProfilePage: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const ProfilePage: React.FunctionComponent = () => {
   const [updatedDisplayName, setUpdatedDisplayName] = useState("");
   const [editing, setEditing] = useState(false);
   const [progress, setProgress] = useState(false);
-
+  const logoutDialog = useRef<DialogRef>(null);
   const updatedDisplayNameField = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -52,10 +53,14 @@ const ProfilePage: React.FunctionComponent = () => {
     evt
   ) => {
     evt.stopPropagation();
+
+    logoutDialog.current?.open();
+  };
+
+  const handleLogOutConfirm = async () => {
     await signOut(getAuth());
     navigate(HOME_PAGE_PATH);
   };
-
   const handleEditClick = () => {
     setUpdatedDisplayName(user?.displayName ?? "");
     setEditing(true);
@@ -105,7 +110,7 @@ const ProfilePage: React.FunctionComponent = () => {
     }
     setProgress(false);
   };
-  
+
   useEffect(() => {
     if (editing === true) {
       updatedDisplayNameField.current?.focus();
@@ -167,24 +172,6 @@ const ProfilePage: React.FunctionComponent = () => {
             <button className="btn btn-logout" onClick={handleLogoutClick}>
               Logout
             </button>
-            {user.isAnonymous && (
-              <ul>
-                <p>Note:</p>
-                <li>Your current Anonymous will be deleted once you logout.</li>
-                <li>
-                  A new Anonymous account will be created when you sign in back
-                  later.
-                </li>
-                <li>
-                  All {numOwnQuizzes} of your unpublished quizzes will become
-                  inaccessible to you/others.
-                </li>
-                <li>
-                  All published quizzes will continue to be available for users
-                  as usual.
-                </li>
-              </ul>
-            )}
           </div>
         </main>
       ) : (
@@ -192,6 +179,41 @@ const ProfilePage: React.FunctionComponent = () => {
           <div className="error">Please login</div>
         </main>
       )}
+
+      <Dialog
+        title={`Confirm Logout`}
+        labelCancel="Cancel"
+        labelConfirm="Yes, Log out"
+        onConfirm={handleLogOutConfirm}
+        ref={logoutDialog}
+      >
+        {user?.isAnonymous && (
+          <ul className="simple-list">
+            <p>
+              <span className="material-symbols-rounded">warning</span>
+            </p>
+            <li>
+              Your current anonymous account will be deleted upon logging out
+              and cannot be recovered.
+            </li>
+            <li>
+              Any unpublished quizzes will become permanently inaccessible.
+            </li>
+            <li>
+              A new anonymous account will be created if you sign in as a guest
+              again later.
+            </li>
+
+            <li>All published quizzes will remain available to other users.</li>
+          </ul>
+        )}
+
+        {user?.isAnonymous == false && (
+          <>
+            <p>Are you sure you want to log out?</p>
+          </>
+        )}
+      </Dialog>
     </>
   );
 };
