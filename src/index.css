@@ -681,7 +681,6 @@ footer.page-footer {
 }
 
 .quiz-runner {
-
   border: thin solid var(--md-sys-color-outline-variant);
   border-radius: 1rem;
   padding: 1rem;
@@ -694,7 +693,7 @@ footer.page-footer {
       margin: 0;
       list-style: none;
 
-      li{
+      li {
         padding: 1rem 0;
       }
     }
@@ -705,6 +704,51 @@ footer.page-footer {
     gap: 1rem;
     justify-content: center;
     align-items: center;
+  }
+}
+
+.profile-page {
+  .welcome-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .salute {
+    margin: 0;
+    color: var(--md-sys-color-on-background);
+  }
+
+  .display-name-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .display-name {
+    font-size: 2rem;
+  }
+
+  .anonymous-content {
+    background-color: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+    max-width: 20rem;
+  }
+
+  .display-name-editor-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 10rem;
+    input {
+      font-size: 1rem;
+      padding: 1rem 1rem;
+      border-radius: 0.5rem;
+      border: thin solid var(--md-sys-color-outline-variant);
+    }
   }
 }
 
