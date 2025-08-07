@@ -1,5 +1,9 @@
 import type { FieldValue, Timestamp } from "firebase/firestore";
-import type { QuestionQuizView, QuestionReview } from "./questionTypes";
+import type {
+  QuestionQuizView,
+  QuestionReview,
+  QuestionRunnerView,
+} from "./questionTypes";
 
 export type QuizDoc = {
   title: string;
@@ -15,6 +19,10 @@ export type QuizDoc = {
   questions: QuestionQuizView[];
 };
 
+export type QuizRunner = {
+  questions: QuestionRunnerView[];
+};
+
 export type QuizItem = {
   id: string;
   title: string;
@@ -22,6 +30,7 @@ export type QuizItem = {
   author: string;
   approvedAt: Timestamp;
 };
+
 export type QuizReview = {
   title: string;
   desc: string;

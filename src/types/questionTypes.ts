@@ -29,6 +29,18 @@ export type QuestionQuizView = {
   type: string;
   availableAnswers: string[];
 };
+
+export type QuestionRunnerView = Omit<QuestionQuizView, "availableAnswers"> & {
+  hasSomeSelectedAnswers: boolean;
+  selectedAnswers: SelectedAnswerType[];
+};
+
+export type SelectedAnswerType = {
+  id: number;
+  answer: String;
+  checked: boolean;
+};
+
 //Readonly question data to show in UI, not in forms
 export type Question = {
   id: string;
