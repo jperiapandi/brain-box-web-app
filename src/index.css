@@ -238,6 +238,18 @@ header.page-header {
   }
 }
 
+.name-value-pair {
+  display: flex;
+  gap: 1rem;
+
+  > :first-child {
+    font-weight: 500;
+  }
+
+  > :last-child {
+    font-weight: 250;
+  }
+}
 .controls-container-h {
   display: flex;
   gap: 1rem;
@@ -734,11 +746,11 @@ footer.page-footer {
 
 .progress-bar {
   border: thin solid var(--md-sys-color-outline-variant);
-  background-color: darkgray;
+  background-color: rgb(226, 226, 226);
   height: 0.25rem;
 
   .completed {
-    background-color: green;
+    background-color: rgb(0, 235, 23);
     height: 100%;
   }
 }
@@ -751,19 +763,6 @@ footer.page-footer {
   flex-direction: column;
   gap: 1rem;
 
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    > :last-child {
-      flex: 1;
-    }
-
-    p {
-      padding: 0;
-      margin: 0;
-    }
-  }
   .question-body {
     min-height: 25rem;
     display: flex;
@@ -796,6 +795,25 @@ footer.page-footer {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+.quiz-review-cmp {
+  .correct {
+    color: green;
+  }
+
+  .correct.user-checked {
+    > * {
+      font-weight: 600;
+    }
+  }
+
+  .wrong.user-checked {
+    color: var(--md-sys-color-error);
+    > * {
+      font-weight: 600;
+    }
   }
 }
 
@@ -844,6 +862,41 @@ footer.page-footer {
   }
 }
 
+.score-card {
+  min-width: 10rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.5rem 1rem;
+
+  border: thin solid var(--md-sys-color-outline-variant);
+  border-radius: 1rem;
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+
+  .score-value {
+    font-weight: bold;
+    font-size: 1.25rem;
+
+    flex: 1;
+  }
+}
+
+.quiz-participation-detail {
+  background-color: var(--md-sys-color-surface-container-high);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  margin-bottom: 1rem;
+}
+
 @media only screen and (min-width: 660px) {
   .questions-panel {
     display: grid;
@@ -869,9 +922,22 @@ footer.page-footer {
       grid-template-columns: 1fr 1fr;
     }
   }
+
+  .quiz-participation-detail {
+    flex-direction: row;
+    align-items: center;
+    > :first-child {
+      flex: 1;
+    }
+  }
 }
 
 @media only screen and (min-width: 1180px) {
+  .quiz-runner {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .quizzes-list-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

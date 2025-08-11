@@ -1,3 +1,5 @@
+export const TIME_PER_QUESTION = 10 * 1000;
+
 export const COLXN_QUIZZES = "quizzes";
 export const COLXN_ANSWERS = "answers";
 export const COLXN_QUIZ_DRAFTS = "quiz-drafts";

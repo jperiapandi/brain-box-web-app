@@ -1,6 +1,6 @@
 import type { FieldValue, Timestamp } from "firebase/firestore";
 import type {
-  QuestionQuizView,
+  QuestionOption,
   QuestionReview,
   QuestionRunnerView,
 } from "./questionTypes";
@@ -16,7 +16,7 @@ export type QuizDoc = {
   approver: string;
   approver_uid: string;
 
-  questions: QuestionQuizView[];
+  questions: QuestionOption[];
 };
 
 export type QuizRunner = {
@@ -39,4 +39,26 @@ export type QuizReview = {
   createdAt: Timestamp;
   submittedAt: Timestamp;
   questions: QuestionReview[];
+};
+
+export type EvaluateQuizResponse = {
+  quizId: string;
+  scoreSum: number;
+  participant: {
+    uid: string;
+    displayName: string;
+  };
+  questionsEvaluated: QuestionEvaluated[];
+};
+
+export type QuestionEvaluated = Omit<QuestionOption, "availableAnswers"> & {
+  userAttempted: boolean;
+  score: number;
+  evaluatedOptions: EvaluatedOption[];
+};
+
+export type EvaluatedOption = {
+  label: string;
+  userChecked: boolean;
+  correct: boolean;
 };

@@ -7,7 +7,7 @@ import useReviewQuizLoader from "../../hooks/useReviewQuizLoader";
 import {
   getQuestionTypeLabel,
   type QToAnswers,
-  type QuestionQuizView,
+  type QuestionOption,
   type QuizAnswersDoc,
 } from "../../types/questionTypes";
 import AnswerReviewList from "../../components/AnswerReviewList";
@@ -39,7 +39,7 @@ const ReviewQuizPage: React.FunctionComponent = () => {
     // console.log(`Approve `, data);
 
     if (data && user != null && docId) {
-      const questions: QuestionQuizView[] = data.questions.map((q) => {
+      const questions: QuestionOption[] = data.questions.map((q) => {
         return {
           id: q.id,
           questionText: q.questionText,

@@ -23,14 +23,14 @@ export type QuestionModel = {
   answersMap: { [key: string]: Answer[] };
 };
 
-export type QuestionQuizView = {
+export type QuestionOption = {
   id: string;
   questionText: string;
   type: string;
   availableAnswers: string[];
 };
 
-export type QuestionRunnerView = Omit<QuestionQuizView, "availableAnswers"> & {
+export type QuestionRunnerView = Omit<QuestionOption, "availableAnswers"> & {
   hasSomeSelectedAnswers: boolean;
   selectedAnswers: SelectedAnswerType[];
 };
