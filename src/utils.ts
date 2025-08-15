@@ -18,3 +18,33 @@ export function getFormattedDate(timestamp: Timestamp) {
   const ss = String(date.getSeconds()).padStart(2, "0");
   return `${month}/${day}/${year} ${hh}:${mm}:${ss}`;
 }
+
+export function getFormattedTime(time: number) {
+  const seconds = time / 1000;
+  const minutes = seconds / 60;
+  const hours = minutes / 60;
+  console.log(seconds, minutes, hours);
+
+  const pSecs = Math.round(seconds) % 60;
+  const pMins = Math.round(Math.floor(minutes)) % 60;
+  const pHours = Math.round(Math.floor(hours));
+
+  if (pHours > 0) {
+    return `${Math.round(pHours)} hours, ${Math.round(
+      pMins
+    )} minutes & ${Math.round(pSecs)} seconds`;
+  }
+
+  if (pMins > 0) {
+    if (pSecs) {
+      return `${pMins} minutes & ${pSecs} seconds`;
+    } else {
+      return `${pMins} minutes`;
+    }
+  }
+  if (pSecs > 0) {
+    return `${pSecs} seconds`;
+  }
+
+  return ``;
+}

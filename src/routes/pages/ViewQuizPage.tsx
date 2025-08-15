@@ -1,5 +1,5 @@
 import type React from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import PageHeader from "../../components/headers/PageHeader";
 import {
   useContext,
@@ -28,6 +28,8 @@ import Timer from "../../components/Timer";
 import ScoreCard from "../../components/ScoreCard";
 
 import QuizReviewCmp from "../../components/QuizReviewCmp";
+import { AUTH_PAGE_PATH } from "../router";
+import { getFormattedTime } from "../../utils";
 
 const QUIZ_BEFORE_START = "quiz-before-start";
 const QUIZ_STARTED = "quiz-started";
@@ -167,48 +169,62 @@ const ViewQuizPage: React.FunctionComponent = () => {
     }
   };
 
-  if (user == null || quiz == null) {
-    return <div>Please wait..</div>;
-  }
-
   let childrenToShow: JSX.Element = <></>;
 
   switch (uiState) {
     case QUIZ_BEFORE_START:
-      childrenToShow = (
-        <>
-          <p>{quiz.desc}</p>
-          <div>
-            You'll tackle {quiz.questions.length} questions in this quiz, with
-            an estimated completion time of {quiz.questions.length * 2} minutes.
-          </div>
-          <div className="controls-container-h-c">
-            <button
-              className="btn btn-primary"
-              disabled={user == null}
-              onClick={() => {
-                setStartTime(new Date());
-                setStarted(true);
-              }}
-            >
-              <span className="material-symbols-rounded">play_arrow</span>
-              <span>Start</span>
-            </button>
-          </div>
-        </>
-      );
+      if (quiz) {
+        childrenToShow = (
+          <>
+            <p>{quiz.desc}</p>
+            <div>
+              You'll tackle {quiz.questions.length} questions in this quiz, with
+              an estimated completion time of{" "}
+              {getFormattedTime(quiz.questions.length * TIME_PER_QUESTION)}.
+            </div>
+            <div className="controls-container-h-c">
+              <button
+                className="btn btn-primary"
+                disabled={user == null}
+                onClick={() => {
+                  setStartTime(new Date());
+                  setStarted(true);
+                }}
+              >
+                <span className="material-symbols-rounded">play_arrow</span>
+                <span>Start</span>
+              </button>
+            </div>
+            {user == null && (
+              <div>
+                Please <Link to={AUTH_PAGE_PATH}>login</Link> to attempt this
+                Quiz.
+              </div>
+            )}
+          </>
+        );
+      } else {
+        childrenToShow = (
+          <>
+            <div>Loading Quiz. Please wait.</div>
+          </>
+        );
+      }
+
       break;
     case QUIZ_STARTED:
-      childrenToShow = (
-        <>
-          <QuizRunner
-            quiz={calculateQuizRunnerData(quiz)}
-            user={user}
-            onSubmit={handleSubmit}
-            onTimeOut={handleTimeOut}
-          ></QuizRunner>
-        </>
-      );
+      if (user && quiz) {
+        childrenToShow = (
+          <>
+            <QuizRunner
+              quiz={calculateQuizRunnerData(quiz)}
+              user={user}
+              onSubmit={handleSubmit}
+              onTimeOut={handleTimeOut}
+            ></QuizRunner>
+          </>
+        );
+      }
       break;
     case QUIZ_TIMED_OUT:
       childrenToShow = (
@@ -221,7 +237,7 @@ const ViewQuizPage: React.FunctionComponent = () => {
     case QUIZ_SUBMITTED:
       childrenToShow = (
         <div>
-          <p>Please wait while we evaluates your answers.</p>
+          <p>Please wait while we evaluate your answers.</p>
         </div>
       );
       break;
@@ -240,6 +256,7 @@ const ViewQuizPage: React.FunctionComponent = () => {
     default:
       <></>;
   }
+
   return (
     <>
       <PageHeader
@@ -254,11 +271,11 @@ const ViewQuizPage: React.FunctionComponent = () => {
             <div>
               <div className="name-value-pair">
                 <span>Participant:</span>
-                <span>{user.displayName}</span>
+                <span>{user?.displayName}</span>
               </div>
               <div className="name-value-pair">
                 <span>Email:</span>
-                <span>{user.email}</span>
+                <span>{user?.email}</span>
               </div>
               <div className="name-value-pair">
                 <span>Start Time:</span>
@@ -266,7 +283,7 @@ const ViewQuizPage: React.FunctionComponent = () => {
               </div>
             </div>
 
-            {evaluated != true && (
+            {evaluated != true && submitted != true && quiz && (
               <Timer totalTime={quiz.questions.length * TIME_PER_QUESTION} />
             )}
             {evaluated && evaluatedResp && (
