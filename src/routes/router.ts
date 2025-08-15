@@ -7,6 +7,7 @@ import App from "../App";
 import ProfilePage from "./pages/ProfilePage";
 import EditQuizPage from "./pages/EditQuizPage";
 import ReviewQuizPage from "./pages/ReviewQuizPage";
+import ProtectedRoue from "../components/ProtectedRoute";
 
 export const HOME_PAGE_PATH = "/";
 export const AUTH_PAGE_PATH = "/auth";
@@ -26,28 +27,33 @@ const router = createBrowserRouter([
         Component: HomePage,
       },
       {
+        Component: ProtectedRoue,
+        children: [
+          {
+            path: CREATE_QUIZ_PAGE_PATH,
+            Component: CreateQuizPage,
+          },
+          {
+            path: EDIT_QUIZ_PAGE_PATH,
+            Component: EditQuizPage,
+          },
+          {
+            path: PROFILE_PAGE_PATH,
+            Component: ProfilePage,
+          },
+          {
+            path: REVIEW_PAGE_PATH,
+            Component: ReviewQuizPage,
+          },
+        ],
+      },
+      {
         path: AUTH_PAGE_PATH,
         Component: AuthPage,
       },
       {
-        path: CREATE_QUIZ_PAGE_PATH,
-        Component: CreateQuizPage,
-      },
-      {
         path: VIEW_QUIZ_PAGE_PATH,
         Component: ViewQuizPage,
-      },
-      {
-        path: EDIT_QUIZ_PAGE_PATH,
-        Component: EditQuizPage,
-      },
-      {
-        path: PROFILE_PAGE_PATH,
-        Component: ProfilePage,
-      },
-      {
-        path: REVIEW_PAGE_PATH,
-        Component: ReviewQuizPage,
       },
     ],
   },
