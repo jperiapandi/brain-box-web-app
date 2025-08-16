@@ -4,8 +4,9 @@ import PageHeader from "../../components/headers/PageHeader";
 import QuizDraftsList from "../../components/QuizDraftsList";
 import { useContext, useRef } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import {
+  ABOUT_PAGE_PATH,
   AUTH_PAGE_PATH,
   CREATE_QUIZ_PAGE_PATH,
   EDIT_QUIZ_PAGE_PATH,
@@ -92,7 +93,9 @@ const HomePage: React.FunctionComponent = () => {
         )}
       </main>
 
-      <footer className="page-footer"></footer>
+      <footer className="page-footer">
+        <NavLink to={ABOUT_PAGE_PATH} >About this app</NavLink>
+      </footer>
     </>
   );
 };

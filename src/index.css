@@ -22,55 +22,55 @@
 /* End of Google Font & Icon Setup */
 
 :root {
-  --md-sys-color-primary: rgb(105 84 141);
-  --md-sys-color-surface-tint: rgb(105 84 141);
+  --md-sys-color-primary: rgb(113 92 12);
+  --md-sys-color-surface-tint: rgb(113 92 12);
   --md-sys-color-on-primary: rgb(255 255 255);
-  --md-sys-color-primary-container: rgb(236 220 255);
-  --md-sys-color-on-primary-container: rgb(81 60 115);
-  --md-sys-color-secondary: rgb(99 91 112);
+  --md-sys-color-primary-container: rgb(254 224 134);
+  --md-sys-color-on-primary-container: rgb(86 69 0);
+  --md-sys-color-secondary: rgb(104 94 64);
   --md-sys-color-on-secondary: rgb(255 255 255);
-  --md-sys-color-secondary-container: rgb(234 222 247);
-  --md-sys-color-on-secondary-container: rgb(75 67 87);
-  --md-sys-color-tertiary: rgb(127 82 92);
+  --md-sys-color-secondary-container: rgb(241 225 187);
+  --md-sys-color-on-secondary-container: rgb(80 70 42);
+  --md-sys-color-tertiary: rgb(70 102 75);
   --md-sys-color-on-tertiary: rgb(255 255 255);
-  --md-sys-color-tertiary-container: rgb(255 217 224);
-  --md-sys-color-on-tertiary-container: rgb(100 59 69);
+  --md-sys-color-tertiary-container: rgb(199 236 202);
+  --md-sys-color-on-tertiary-container: rgb(46 78 53);
   --md-sys-color-error: rgb(186 26 26);
   --md-sys-color-on-error: rgb(255 255 255);
   --md-sys-color-error-container: rgb(255 218 214);
   --md-sys-color-on-error-container: rgb(147 0 10);
-  --md-sys-color-background: rgb(254 247 255);
-  --md-sys-color-on-background: rgb(29 26 32);
-  --md-sys-color-surface: rgb(254 247 255);
-  --md-sys-color-on-surface: rgb(29 26 32);
-  --md-sys-color-surface-variant: rgb(232 224 235);
-  --md-sys-color-on-surface-variant: rgb(73 69 78);
-  --md-sys-color-outline: rgb(122 117 127);
-  --md-sys-color-outline-variant: rgb(203 196 207);
+  --md-sys-color-background: rgb(255 248 240);
+  --md-sys-color-on-background: rgb(30 27 19);
+  --md-sys-color-surface: rgb(255 248 240);
+  --md-sys-color-on-surface: rgb(30 27 19);
+  --md-sys-color-surface-variant: rgb(235 226 207);
+  --md-sys-color-on-surface-variant: rgb(76 70 57);
+  --md-sys-color-outline: rgb(125 118 103);
+  --md-sys-color-outline-variant: rgb(206 198 180);
   --md-sys-color-shadow: rgb(0 0 0);
   --md-sys-color-scrim: rgb(0 0 0);
-  --md-sys-color-inverse-surface: rgb(50 47 53);
-  --md-sys-color-inverse-on-surface: rgb(245 238 247);
-  --md-sys-color-inverse-primary: rgb(212 187 252);
-  --md-sys-color-primary-fixed: rgb(236 220 255);
-  --md-sys-color-on-primary-fixed: rgb(36 14 69);
-  --md-sys-color-primary-fixed-dim: rgb(212 187 252);
-  --md-sys-color-on-primary-fixed-variant: rgb(81 60 115);
-  --md-sys-color-secondary-fixed: rgb(234 222 247);
-  --md-sys-color-on-secondary-fixed: rgb(31 24 42);
-  --md-sys-color-secondary-fixed-dim: rgb(206 194 219);
-  --md-sys-color-on-secondary-fixed-variant: rgb(75 67 87);
-  --md-sys-color-tertiary-fixed: rgb(255 217 224);
-  --md-sys-color-on-tertiary-fixed: rgb(50 16 26);
-  --md-sys-color-tertiary-fixed-dim: rgb(241 183 195);
-  --md-sys-color-on-tertiary-fixed-variant: rgb(100 59 69);
-  --md-sys-color-surface-dim: rgb(222 216 224);
-  --md-sys-color-surface-bright: rgb(254 247 255);
+  --md-sys-color-inverse-surface: rgb(52 48 39);
+  --md-sys-color-inverse-on-surface: rgb(248 240 226);
+  --md-sys-color-inverse-primary: rgb(225 196 109);
+  --md-sys-color-primary-fixed: rgb(254 224 134);
+  --md-sys-color-on-primary-fixed: rgb(35 27 0);
+  --md-sys-color-primary-fixed-dim: rgb(225 196 109);
+  --md-sys-color-on-primary-fixed-variant: rgb(86 69 0);
+  --md-sys-color-secondary-fixed: rgb(241 225 187);
+  --md-sys-color-on-secondary-fixed: rgb(34 27 4);
+  --md-sys-color-secondary-fixed-dim: rgb(212 197 161);
+  --md-sys-color-on-secondary-fixed-variant: rgb(80 70 42);
+  --md-sys-color-tertiary-fixed: rgb(199 236 202);
+  --md-sys-color-on-tertiary-fixed: rgb(2 33 12);
+  --md-sys-color-tertiary-fixed-dim: rgb(172 207 175);
+  --md-sys-color-on-tertiary-fixed-variant: rgb(46 78 53);
+  --md-sys-color-surface-dim: rgb(225 217 204);
+  --md-sys-color-surface-bright: rgb(255 248 240);
   --md-sys-color-surface-container-lowest: rgb(255 255 255);
-  --md-sys-color-surface-container-low: rgb(248 241 249);
-  --md-sys-color-surface-container: rgb(243 236 244);
-  --md-sys-color-surface-container-high: rgb(237 230 238);
-  --md-sys-color-surface-container-highest: rgb(231 224 232);
+  --md-sys-color-surface-container-low: rgb(251 243 229);
+  --md-sys-color-surface-container: rgb(245 237 223);
+  --md-sys-color-surface-container-high: rgb(239 231 218);
+  --md-sys-color-surface-container-highest: rgb(233 226 212);
 }
 
 html,
@@ -281,7 +281,7 @@ header.page-header {
   grid-template-columns: 3rem 1fr;
   align-items: center;
   height: 100%;
-
+  cursor: pointer;
   .sn-box {
     background-color: var(--md-sys-color-primary);
     height: 100%;
@@ -361,6 +361,10 @@ main.page-content {
 
 footer.page-footer {
   padding: 1rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .quiz-edit-form {
@@ -895,6 +899,12 @@ footer.page-footer {
   gap: 1.5rem;
 
   margin-bottom: 1rem;
+}
+
+.about-me-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 @media only screen and (min-width: 660px) {
