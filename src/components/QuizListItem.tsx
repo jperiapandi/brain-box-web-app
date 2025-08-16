@@ -13,7 +13,7 @@ const QuizListItem: React.FunctionComponent<QuizListItemProps> = ({
   quiz,
   sn,
 }) => {
-  const maxChars = 120-3;
+  const maxChars = 120 - 3;
   const truncatedDesc =
     quiz.desc.length > maxChars
       ? quiz.desc.substring(0, maxChars) + "..."
@@ -31,8 +31,11 @@ const QuizListItem: React.FunctionComponent<QuizListItemProps> = ({
         </NavLink>
         <p>{truncatedDesc}</p>
         <div className="info-container">
-          <Attribute icon="person" label={quiz.author} />
+          <Attribute icon="person" label={"By " + quiz.author} />
           <Attribute icon="event" label={getFormattedDate(quiz.approvedAt)} />
+          {quiz.participantsCount > 5 && (
+            <Attribute icon="trending_up" label={quiz.participantsCount + ""} />
+          )}
         </div>
       </div>
     </div>

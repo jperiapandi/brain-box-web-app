@@ -23,7 +23,6 @@ export function getFormattedTime(time: number) {
   const seconds = time / 1000;
   const minutes = seconds / 60;
   const hours = minutes / 60;
-  console.log(seconds, minutes, hours);
 
   const pSecs = Math.round(seconds) % 60;
   const pMins = Math.round(Math.floor(minutes)) % 60;

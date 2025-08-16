@@ -36,7 +36,6 @@ const ReviewQuizPage: React.FunctionComponent = () => {
   const { data } = loader;
 
   const handleApproveClick = async () => {
-    // console.log(`Approve `, data);
 
     if (data && user != null && docId) {
       const questions: QuestionOption[] = data.questions.map((q) => {
@@ -176,7 +175,7 @@ const ReviewQuizPage: React.FunctionComponent = () => {
 
       {loader.success == true && data != null && (
         <footer className="review-quiz-footer">
-          <button className="btn btn-logout" onClick={handleRejectClick}>
+          <button className="btn btn-danger" onClick={handleRejectClick}>
             Reject
           </button>
           <button className="btn btn-primary" onClick={handleApproveClick}>

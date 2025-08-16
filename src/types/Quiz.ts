@@ -28,7 +28,10 @@ export type QuizItem = {
   title: string;
   desc: string;
   author: string;
+  isAnonymous: boolean;
+  averageRating: number;
   approvedAt: Timestamp;
+  participantsCount: number;
 };
 
 export type QuizReview = {

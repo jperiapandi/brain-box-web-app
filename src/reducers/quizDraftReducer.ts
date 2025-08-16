@@ -26,7 +26,7 @@ const quizDraftReducer: React.Reducer<QuizDraft, QuizDraftAction> = (
 ) => {
   let updatedState: QuizDraft;
   const { title, desc, question, questionId, status } = action.dataToUpdate;
-  console.log(`QuizDraftAction : ${action.type}`);
+  // console.log(`QuizDraftAction : ${action.type}`);
 
   switch (action.type) {
     case DRAFT_CHANGE_TITLE:

@@ -1,5 +1,6 @@
 import {
   useReducer,
+  useRef,
   useState,
   type MouseEventHandler,
   type PropsWithChildren,
@@ -25,6 +26,10 @@ import {
   submitQuizDraft,
   updateQuizDraft,
 } from "../services/quizDraftServices";
+import Dialog, { type DialogRef } from "./Dialog";
+import { deleteDoc, doc, getFirestore } from "firebase/firestore";
+import { COLXN_QUIZ_DRAFTS } from "../types/constants";
+import { useNavigate } from "react-router";
 
 type QuizDraftFormProps = PropsWithChildren & {
   draft: QuizDraft;
@@ -45,10 +50,12 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
   onSubmitFail,
   onCancel,
 }) => {
+  const navigate = useNavigate();
   const [updatedDraft, dispatch] = useReducer(quizDraftReducer, draft);
   const [curDocId, setCurDocId] = useState(docId);
 
   const [dirty, setDirty] = useState(false);
+  const deleteDialog = useRef<DialogRef>(null);
 
   const handleTitleChange = (v: string) => {
     dispatch({
@@ -151,92 +158,124 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
     onCancel?.();
   };
 
+  const handleDeleteQuizClick: MouseEventHandler<HTMLButtonElement> = (evt) => {
+    evt.stopPropagation();
+
+    deleteDialog?.current?.open();
+  };
+
+  const deleteDraft = async () => {
+    if (curDocId) {
+      await deleteDoc(doc(getFirestore(), COLXN_QUIZ_DRAFTS, curDocId));
+      console.log(`Quiz Draft ${curDocId} is deleted.`);
+      navigate(-1);
+    }
+  };
   const saveDisabled = dirty === false;
 
   return (
-    <div className="quiz-edit-form">
-      <div>
+    <>
+      <Dialog
+        title="Are you sure?"
+        labelCancel="No"
+        labelConfirm="Yes"
+        ref={deleteDialog}
+        onConfirm={deleteDraft}
+      >
+        <div>Do you really want to delete this Quiz?</div>
+      </Dialog>
+
+      <div className="quiz-edit-form">
         <div>
-          <span>Author:</span> <span>{updatedDraft.author}</span>
+          <div>
+            <span>Author:</span> <span>{updatedDraft.author}</span>
+          </div>
         </div>
-      </div>
 
-      <FormField
-        type="input"
-        label="Quiz Title"
-        id="quiz-title"
-        value={updatedDraft.title}
-        placeHolder="Quiz Title"
-        onChange={handleTitleChange}
-      ></FormField>
-      <FormField
-        type="textarea"
-        label="Description"
-        id="quiz-desc"
-        value={updatedDraft.desc}
-        placeHolder="Describe this quiz."
-        onChange={handleDescChange}
-      ></FormField>
+        <FormField
+          type="input"
+          label="Quiz Title"
+          id="quiz-title"
+          value={updatedDraft.title}
+          placeHolder="Quiz Title"
+          onChange={handleTitleChange}
+        ></FormField>
+        <FormField
+          type="textarea"
+          label="Description"
+          id="quiz-desc"
+          value={updatedDraft.desc}
+          placeHolder="Describe this quiz."
+          onChange={handleDescChange}
+        ></FormField>
 
-      <section className="questions">
-        <div>
-          {updatedDraft.questions.length == 0 ? (
-            <p>
-              There are no questions added yet. Please add questions to the
-              quiz.
-            </p>
-          ) : (
-            <h2>Questions</h2>
+        <section className="questions">
+          <div>
+            {updatedDraft.questions.length == 0 ? (
+              <p>
+                There are no questions added yet. Please add questions to the
+                quiz.
+              </p>
+            ) : (
+              <h2>Questions</h2>
+            )}
+          </div>
+
+          <div className="questions-panel">
+            {updatedDraft.questions.map((q, idx) => {
+              return (
+                <QuestionEditor
+                  key={q.id}
+                  sn={idx + 1}
+                  question={q}
+                  onChange={handleQuestionChange}
+                  onRemove={handleQuestionRemove}
+                />
+              );
+            })}
+          </div>
+
+          <div className="controls-container-h-c">
+            {updatedDraft.status != "new" && (
+              <button
+                className="btn btn-danger"
+                onClick={handleDeleteQuizClick}
+              >
+                <span className="material-symbols-rounded">delete</span>
+                <span>Delete this Quiz Draft</span>
+              </button>
+            )}
+
+            <button onClick={handleQuestionAdd} className="btn btn-primary">
+              <span className="material-symbols-rounded">add</span>
+              <span>Add a Question</span>
+            </button>
+          </div>
+        </section>
+
+        <footer>
+          <button className="btn" onClick={handleCancelClick}>
+            Cancel
+          </button>
+          {curDocId == null ||
+          curDocId == undefined ||
+          curDocId === "" ? null : (
+            <button className="btn btn-secondary" onClick={handleSubmitClick}>
+              Submit
+            </button>
           )}
-        </div>
 
-        <div className="questions-panel">
-          {updatedDraft.questions.map((q, idx) => {
-            return (
-              <QuestionEditor
-                key={q.id}
-                sn={idx + 1}
-                question={q}
-                onChange={handleQuestionChange}
-                onRemove={handleQuestionRemove}
-              />
-            );
-          })}
-        </div>
-
-        <div style={{ padding: "1rem 0rem" }}>
-          <button onClick={handleQuestionAdd} className="btn btn-primary">
-            <span className="material-symbols-rounded">add</span>
-            <span>Add a Question</span>
-          </button>
-        </div>
-      </section>
-
-      <footer>
-        <button className="btn" onClick={handleCancelClick}>
-          Cancel
-        </button>
-        {curDocId == null || curDocId == undefined || curDocId === "" ? null : (
           <button
-            className="btn btn-secondary"
-            onClick={handleSubmitClick}
+            className="btn btn-primary"
+            onClick={handleSaveClick}
+            disabled={saveDisabled}
           >
-            Submit
+            {updatedDraft.status === "new" ? "Save" : "Update"}
           </button>
-        )}
-
-        <button
-          className="btn btn-primary"
-          onClick={handleSaveClick}
-          disabled={saveDisabled}
-        >
-          {updatedDraft.status === "new" ? "Save" : "Update"}
-        </button>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </>
   );
 };
 
 export default QuizDraftForm;
-
-/*** Reducer ***/

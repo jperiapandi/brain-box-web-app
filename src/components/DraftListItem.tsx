@@ -48,6 +48,9 @@ const DraftListItem: React.FunctionComponent<DraftListItemProps> = ({
       </div>
       <div className="controls-container">
         <span className={`status-label ${status}`}>{status}</span>
+        {status==QUIZ_STATUS_SUBMITTED && <div className="error">
+          Not yet Published.
+          </div>}
         {!editDisabled && (
           <button
             className="icon-btn"

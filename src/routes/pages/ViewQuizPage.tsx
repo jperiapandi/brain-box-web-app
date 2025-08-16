@@ -10,7 +10,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import { COLXN_QUIZZES, TIME_PER_QUESTION } from "../../types/constants";
 import type {
   EvaluateQuizResponse,
@@ -28,8 +28,10 @@ import Timer from "../../components/Timer";
 import ScoreCard from "../../components/ScoreCard";
 
 import QuizReviewCmp from "../../components/QuizReviewCmp";
-import { AUTH_PAGE_PATH } from "../router";
+import { AUTH_PAGE_PATH, HOME_PAGE_PATH } from "../router";
 import { getFormattedTime } from "../../utils";
+import { ClaimsContext } from "../../contexts/ClaimsContext";
+import Dialog, { type DialogRef } from "../../components/Dialog";
 
 const QUIZ_BEFORE_START = "quiz-before-start";
 const QUIZ_STARTED = "quiz-started";
@@ -61,6 +63,9 @@ const ViewQuizPage: React.FunctionComponent = () => {
   }, []);
 
   const user = useContext(UserContext);
+  const claims = useContext(ClaimsContext);
+  const deleteDialog = useRef<DialogRef>(null);
+
   const { id } = useParams();
   const [quiz, setQuiz] = useState<QuizDoc>();
   const [error, setError] = useState<Error>();
@@ -169,6 +174,22 @@ const ViewQuizPage: React.FunctionComponent = () => {
     }
   };
 
+  const deleteQuiz = async () => {
+    try {
+      if (id) {
+        await updateDoc(doc(getFirestore(), COLXN_QUIZZES, id), {
+          status: "deleted",
+          approved: false,
+        });
+
+        console.log(`Quiz is SOFT Deleted.`);
+        navigate(HOME_PAGE_PATH);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   let childrenToShow: JSX.Element = <></>;
 
   switch (uiState) {
@@ -183,6 +204,21 @@ const ViewQuizPage: React.FunctionComponent = () => {
               {getFormattedTime(quiz.questions.length * TIME_PER_QUESTION)}.
             </div>
             <div className="controls-container-h-c">
+              {user && claims && claims.superAdmin == true && (
+                <>
+                  <button
+                    className="btn btn-danger"
+                    disabled={user == null}
+                    onClick={() => {
+                      deleteDialog.current?.open();
+                    }}
+                  >
+                    <span className="material-symbols-rounded">delete</span>
+                    <span>DELETE</span>
+                  </button>
+                </>
+              )}
+
               <button
                 className="btn btn-primary"
                 disabled={user == null}
@@ -265,6 +301,18 @@ const ViewQuizPage: React.FunctionComponent = () => {
         navBack={true}
         profile={false}
       ></PageHeader>
+
+      <Dialog
+        title="Delete this Quiz"
+        labelCancel="No, I changed my mind"
+        labelConfirm="Yes, Delete"
+        ref={deleteDialog}
+        onConfirm={deleteQuiz}
+      >
+        <div>Do you really want to delete this Quiz ?</div>
+        <div>Deleted quizzes can not be recovered.</div>
+      </Dialog>
+
       <main className="page-content">
         {started && (
           <div className="quiz-participation-detail">

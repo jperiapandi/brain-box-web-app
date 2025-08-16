@@ -23,7 +23,7 @@ const EditQuizPage: React.FunctionComponent = () => {
 
   const [quizDraft, setQuizDraft] = useState<QuizDraft>();
   const [loading, setLoading] = useState(true);
-  const [failure, setFailure] = useState(false);
+  const [error, setError] = useState<Error>();
   const [success, setSuccess] = useState(false);
 
   let docRef: DocumentReference<DocumentData, DocumentData>;
@@ -31,11 +31,11 @@ const EditQuizPage: React.FunctionComponent = () => {
   useEffect(() => {
     setLoading(true);
     setSuccess(false);
-    setFailure(false);
+    setError(undefined);
 
     if (user != null) {
       //Load Quiz from Firestore
-      //TODO; Ensure this user is allowed to load this doc form Firestore
+      //TODO Ensure this user is allowed to load this doc form Firestore
       docRef = doc(getFirestore(), `quiz-drafts/${docId}`);
 
       //Load data from Firestore
@@ -45,19 +45,25 @@ const EditQuizPage: React.FunctionComponent = () => {
             //Success
             setLoading(false);
             setSuccess(true);
-            setFailure(false);
+            setError(undefined);
             const data = docSnapshot.data() as QuizDraft;
             setQuizDraft(data);
           } else {
+            const err = new Error(
+              `Quiz Draft not found in our Database. Please edit some other quiz drafts. `
+            );
             setLoading(false);
             setSuccess(false);
-            setFailure(true);
+            setError(err);
           }
         })
         .catch((err) => {
           console.error(err);
           setLoading(true);
           setSuccess(false);
+          setError(
+            new Error(`Sorry something went wring. Please try again later.`)
+          );
         });
     }
   }, [user]);
@@ -99,8 +105,7 @@ const EditQuizPage: React.FunctionComponent = () => {
         ) : (
           <>
             {loading && <div>Loading ... please wait.</div>}
-            {failure && <div>Sorry something went wrong.</div>}
-            {success && <div>Data loaded Success</div>}
+            { error && <div>{error.message}</div>}
           </>
         )}
       </main>

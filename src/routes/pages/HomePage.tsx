@@ -2,7 +2,7 @@ import type React from "react";
 import PageHeader from "../../components/headers/PageHeader";
 
 import QuizDraftsList from "../../components/QuizDraftsList";
-import { useContext, useRef} from "react";
+import { useContext, useRef } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router";
 import {
@@ -10,12 +10,11 @@ import {
   CREATE_QUIZ_PAGE_PATH,
   EDIT_QUIZ_PAGE_PATH,
 } from "../router";
-import LoginDialog, { type ModalRef } from "../../components/LoginDialog";
 import WelcomeUser from "../../components/WelcomeUser";
 import { ClaimsContext } from "../../contexts/ClaimsContext";
 import SubmittedQuizDrafts from "../../components/SubmittedQuizDrafts";
 import QuizList from "../../components/QuizList";
-import QuizzesProvider from "../../components/QuizzesProvider";
+import Dialog, { type DialogRef } from "../../components/Dialog";
 
 const HomePage: React.FunctionComponent = () => {
   //Hooks
@@ -24,7 +23,7 @@ const HomePage: React.FunctionComponent = () => {
 
   const navigate = useNavigate();
   //States
-  const loginModal = useRef<ModalRef>(null);
+  const loginModal = useRef<DialogRef>(null);
   //Const
   const handleDraftEdit = (quizDraftId: string) => {
     console.log(`Start editing ${quizDraftId}`);
@@ -33,7 +32,7 @@ const HomePage: React.FunctionComponent = () => {
 
   const handleCreateQuizClick = () => {
     if (user == null) {
-      loginModal.current?.openModal();
+      loginModal.current?.open();
     } else {
       navigate(CREATE_QUIZ_PAGE_PATH);
     }
@@ -48,28 +47,34 @@ const HomePage: React.FunctionComponent = () => {
   //
   return (
     <>
+      <Dialog
+        title="Login"
+        labelCancel="I will login later"
+        labelConfirm="Login"
+        ref={loginModal}
+        onConfirm={() => {
+          navigate(AUTH_PAGE_PATH);
+        }}
+      >
+        <div>{loginToCreateQuizzes}</div>
+      </Dialog>
       <PageHeader title="Brain Box"></PageHeader>
       <main className="page-content">
-        <LoginDialog
-          ref={loginModal}
-          message={loginToCreateQuizzes}
-          onLoginClick={() => {
-            navigate(AUTH_PAGE_PATH);
-          }}
-        ></LoginDialog>
-
         <WelcomeUser
           onCreateQuizClick={handleCreateQuizClick}
           onSignInClick={handleSignInClick}
         />
 
-        <QuizzesProvider>
-          <QuizList />
-        </QuizzesProvider>
+        <QuizList />
 
         {user !== null && (
           <div className="controls-container-h">
-            <button className="btn btn-secondary" onClick={handleCreateQuizClick}>Create a Quiz</button>
+            <button
+              className="btn btn-secondary"
+              onClick={handleCreateQuizClick}
+            >
+              Create a Quiz
+            </button>
           </div>
         )}
 

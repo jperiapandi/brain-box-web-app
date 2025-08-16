@@ -169,7 +169,7 @@ const ProfilePage: React.FunctionComponent = () => {
           <p>Number of quizzes you attended: {0}</p>
 
           <div>
-            <button className="btn btn-logout" onClick={handleLogoutClick}>
+            <button className="btn btn-danger" onClick={handleLogoutClick}>
               Logout
             </button>
           </div>
