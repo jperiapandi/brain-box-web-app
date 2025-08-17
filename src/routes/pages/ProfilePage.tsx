@@ -16,36 +16,93 @@ import { HOME_PAGE_PATH } from "../router";
 import {
   collection,
   getCountFromServer,
+  getDocs,
   getFirestore,
   query,
   where,
 } from "firebase/firestore";
-import { COLXN_QUIZ_DRAFTS } from "../../types/constants";
+import {
+  COLXN_PARTICIPATION,
+  COLXN_QUIZ_DRAFTS,
+  COLXN_QUIZZES,
+  FIELD_APPROVED,
+  FIELD_AUTHOR_UID,
+} from "../../types/constants";
 import Dialog, { type DialogRef } from "../../components/Dialog";
+import type { Participation } from "../../types/participation";
+import { getFormattedDate } from "../../utils";
 
 const ProfilePage: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  const [numOwnQuizzes, setNumOwnQuizzes] = useState(0);
+  const [numOfDrafts, setNumOfDrafts] = useState(0);
+  const [numOfQuizzes, setNumOfQuizzes] = useState(0);
   const [updatedDisplayName, setUpdatedDisplayName] = useState("");
   const [editing, setEditing] = useState(false);
   const [progress, setProgress] = useState(false);
   const logoutDialog = useRef<DialogRef>(null);
   const updatedDisplayNameField = useRef<HTMLInputElement>(null);
+  const [partHistory, setPartHistory] = useState<Participation[]>([]);
 
   useEffect(() => {
     if (user) {
       const q = query(
         collection(getFirestore(), COLXN_QUIZ_DRAFTS),
-        where("author_uid", "==", user.uid)
+        where(FIELD_AUTHOR_UID, "==", user.uid)
       );
       getCountFromServer(q)
         .then((v) => {
-          setNumOwnQuizzes(v.data().count);
+          setNumOfDrafts(v.data().count);
         })
         .catch((reason) => {
           console.error(reason);
         });
+
+      //Get the number of approved Quizzes created by User
+      const q2 = query(
+        collection(getFirestore(), COLXN_QUIZZES),
+        where(FIELD_AUTHOR_UID, "==", user.uid),
+        where(FIELD_APPROVED, "==", true)
+      );
+      getCountFromServer(q2)
+        .then((v) => {
+          setNumOfQuizzes(v.data().count);
+        })
+        .catch((reason) => {
+          console.error(reason);
+        });
+
+      //Load the quizzes participated by this user
+
+      const q3 = query(
+        collection(getFirestore(), COLXN_PARTICIPATION),
+        where("participant.uid", "==", user.uid)
+      );
+
+      getDocs(q3).then(
+        (snapshot) => {
+          if (snapshot.empty) {
+            console.log(`No Participations found for the user`);
+            setPartHistory([]);
+          } else {
+            const histories = snapshot.docs.map((doc) => {
+              const pDoc = doc.data() as Participation;
+              pDoc.docId = doc.id;
+              return pDoc;
+            });
+
+            histories.sort((a, b) => {
+              return b.participatedAt.toMillis() - a.participatedAt.toMillis();
+            });
+
+            setPartHistory(histories);
+          }
+        },
+        (reason) => {
+          console.error(reason);
+          setPartHistory([]);
+        }
+      );
     }
   }, [user]);
 
@@ -165,10 +222,34 @@ const ProfilePage: React.FunctionComponent = () => {
               <span>You are an Anonymous user.</span>
             </div>
           )}
-          <p>Number of quizzes created by you: {numOwnQuizzes}</p>
-          <p>Number of quizzes you attended: {0}</p>
+          <p>Number of Quiz Drafts: {numOfDrafts}</p>
+          <p>Number of Approved Quizzes: {numOfQuizzes}</p>
 
-          <div>
+          {partHistory.length > 0 && (
+            <>
+              <div>
+                <h3>Your recent attempts:</h3>
+
+                <div className="quiz-history-row title-row">
+                  <div>Quiz</div>
+                  <div>Score</div>
+                  <div>Time</div>
+                </div>
+
+                {partHistory.map((p) => {
+                  return (
+                    <div key={p.docId} className="quiz-history-row">
+                      <div>{p.quizTitle}</div>
+                      <div>{p.scoreSum}</div>
+                      <div>{getFormattedDate(p.participatedAt)}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          <div className="controls-container-h">
             <button className="btn btn-danger" onClick={handleLogoutClick}>
               Logout
             </button>

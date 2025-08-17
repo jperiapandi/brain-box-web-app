@@ -7,7 +7,9 @@ import type { QuizDraft } from "../types/quizDraft";
 import type { QuestionReview } from "../types/questionTypes";
 import type { QuizReview } from "../types/quiz";
 
-export default function useReviewQuizLoader(docId: string): ApiLoader<QuizReview> {
+export default function useReviewQuizLoader(
+  docId: string
+): ApiLoader<QuizReview> {
   const [progress, setProgress] = useState(false);
   const [success, setSuccess] = useState(false);
   const [failure, setFailure] = useState(false);
@@ -41,6 +43,7 @@ export default function useReviewQuizLoader(docId: string): ApiLoader<QuizReview
 
             const quizReview: QuizReview = {
               author: docData.author,
+              author_uid: docData.author_uid,
               isAnonymous: docData.isAnonymous,
               title: docData.title,
               desc: docData.desc,

@@ -4,6 +4,7 @@ import {
   collection,
   getFirestore,
   onSnapshot,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -23,7 +24,8 @@ const useQuizzesSnapshot = () => {
 
     const q = query(
       collection(getFirestore(), COLXN_QUIZZES),
-      where("approved", "==", true)
+      where("approved", "==", true),
+      orderBy("approvedAt", "desc")
     );
     const unsubscribe = onSnapshot(q, {
       next: (snapshot) => {
@@ -52,6 +54,7 @@ const useQuizzesSnapshot = () => {
           })
         );
         setLoading(false);
+        console.error(err);
       },
     });
 

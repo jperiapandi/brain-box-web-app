@@ -9,6 +9,7 @@ export type QuizDoc = {
   title: string;
   desc: string;
   author: string;
+  author_uid: string;
   isAnonymous: boolean;
 
   approved: boolean;
@@ -38,6 +39,7 @@ export type QuizReview = {
   title: string;
   desc: string;
   author: string;
+  author_uid: string;
   isAnonymous: boolean;
   createdAt: Timestamp;
   submittedAt: Timestamp;
@@ -46,6 +48,7 @@ export type QuizReview = {
 
 export type EvaluateQuizResponse = {
   quizId: string;
+  quizTitle: string;
   scoreSum: number;
   participant: {
     uid: string;

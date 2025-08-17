@@ -124,7 +124,7 @@ const ViewQuizPage: React.FunctionComponent = () => {
       } else {
         handleSubmit(answeredQuestions);
       }
-    }, 2000);
+    }, 1000);
   };
   const handleSubmit = async (answeredQuestions: QuestionRunnerView[]) => {
     setSubmitted(true);

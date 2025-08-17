@@ -36,7 +36,6 @@ const ReviewQuizPage: React.FunctionComponent = () => {
   const { data } = loader;
 
   const handleApproveClick = async () => {
-
     if (data && user != null && docId) {
       const questions: QuestionOption[] = data.questions.map((q) => {
         return {
@@ -62,6 +61,7 @@ const ReviewQuizPage: React.FunctionComponent = () => {
         title: data.title,
         desc: data.desc,
         author: data.author,
+        author_uid: data.author_uid,
         isAnonymous: data.isAnonymous,
 
         approved: true,

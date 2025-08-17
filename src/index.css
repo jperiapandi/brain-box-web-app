@@ -907,6 +907,21 @@ footer.page-footer {
   gap: 1rem;
 }
 
+.quiz-history-row {
+  display: grid;
+  grid-template-columns: 4fr 1fr 3fr;
+  border-bottom: solid thin var(--md-sys-color-outline-variant);
+  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+}
+
+.quiz-history-row.title-row {
+  > * {
+    font-weight: 450;
+  }
+  background-color: var(--md-sys-color-primary-container);
+}
+
 @media only screen and (min-width: 660px) {
   .questions-panel {
     display: grid;
