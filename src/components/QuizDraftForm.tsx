@@ -56,6 +56,7 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
 
   const [dirty, setDirty] = useState(false);
   const deleteDialog = useRef<DialogRef>(null);
+  const submitDialog = useRef<DialogRef>(null);
 
   const handleTitleChange = (v: string) => {
     dispatch({
@@ -140,6 +141,10 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
     evt
   ) => {
     evt.stopPropagation();
+    submitDialog.current?.open();
+  };
+
+  const handleSubmitConfirm = async () => {
     try {
       if (curDocId === "" || curDocId == undefined || curDocId == null) {
         throw new Error("docId is missing. Can not update this in DB.");
@@ -152,6 +157,7 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
       onSubmitFail?.(error as Error);
     }
   };
+
   const handleCancelClick: MouseEventHandler<HTMLButtonElement> = (evt) => {
     evt.stopPropagation();
     setDirty(false);
@@ -183,6 +189,28 @@ const QuizDraftForm: React.FunctionComponent<QuizDraftFormProps> = ({
         onConfirm={deleteDraft}
       >
         <div>Do you really want to delete this Quiz?</div>
+      </Dialog>
+
+      <Dialog
+        title="Submit"
+        labelConfirm="Yes, Submit"
+        labelCancel="I will submit later"
+        ref={submitDialog}
+        onConfirm={handleSubmitConfirm}
+      >
+        <div>
+          <div className="material-symbols-rounded">warning</div>
+          <div>
+            <p>
+              Thanks for submitting your quiz! Just a heads-up, once you send it
+              in, you can't make any more changes.
+            </p>
+            <div>
+              Our Admin Team will take a look and get it approved. After that,
+              it'll go live on the BrainBox app so everyone can participate.
+            </div>
+          </div>
+        </div>
       </Dialog>
 
       <div className="quiz-edit-form">
