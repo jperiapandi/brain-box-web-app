@@ -982,6 +982,81 @@ footer.page-footer {
   background-color: var(--md-sys-color-primary-container);
 }
 
+.spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.35rem solid var(--md-sys-color-outline-variant);
+  border-top: 0.35rem solid var(--md-sys-color-primary);
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+    background-color: var(--md-sys-color-background);
+  }
+
+  100% {
+    transform: rotate(360deg);
+    background-color: var(--md-sys-color-tertiary-container);
+  }
+}
+
+.evaluation-progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem;
+}
+
+.recent-participants-container {
+  h3 {
+    color: var(--md-sys-color-on-background);
+    margin: 0;
+    margin-bottom: 0.5rem;
+    padding: 0;
+  }
+}
+
+.participants-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.participant {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* border-radius: 1rem; */
+
+  /* border: solid thin var(--md-sys-color-outline-variant); */
+  .display-name {
+    font-size: 1.1rem;
+  }
+
+  .score {
+    color: var(--md-sys-color-on-tertiary);
+    font-size: 0.75rem;
+    background-color: var(--md-sys-color-tertiary);
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .participated-at {
+    color: var(--md-sys-color-tertiary);
+    font-size: 0.8rem;
+  }
+
+  > * {
+    color: var(--md-sys-color-on-tertiary-container);
+  }
+}
+
+/*******END***********/
 @media only screen and (min-width: 660px) {
   .questions-panel {
     display: grid;

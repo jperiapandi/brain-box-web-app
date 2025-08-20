@@ -1,12 +1,17 @@
-import type { Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
-export function getFormattedDate(timestamp: Timestamp) {
-  if (!timestamp) {
-    return "";
+export function getFormattedDate(ipValue: Timestamp | Date | unknown) {
+  let date: Date | undefined;
+
+  if (ipValue instanceof Date) {
+    date = ipValue;
+  } else if (ipValue instanceof Timestamp) {
+    date = ipValue.toDate();
+  } else {
+    date = undefined;
   }
 
-  const date = timestamp.toDate();
-  if (isNaN(date.getTime())) {
+  if (date == undefined) {
     return "";
   }
 
@@ -18,7 +23,7 @@ export function getFormattedDate(timestamp: Timestamp) {
   const mm = String(date.getMinutes()).padStart(2, "0");
   // const ss = String(date.getSeconds()).padStart(2, "0");
 
-  if(year == now.getFullYear()){
+  if (year == now.getFullYear()) {
     return `${month}/${day} ${hh}:${mm}`;
   }
   return `${month}/${day}/${year} ${hh}:${mm}`;

@@ -29,9 +29,11 @@ import ScoreCard from "../../components/ScoreCard";
 
 import QuizReviewCmp from "../../components/QuizReviewCmp";
 import { AUTH_PAGE_PATH, HOME_PAGE_PATH } from "../router";
-import { getFormattedTime } from "../../utils";
+import { getFormattedDate, getFormattedTime } from "../../utils";
 import { ClaimsContext } from "../../contexts/ClaimsContext";
 import Dialog, { type DialogRef } from "../../components/Dialog";
+import Spinner from "../../components/Spinner";
+import RecentParticipants from "../../components/RecentParticipants";
 
 const QUIZ_BEFORE_START = "quiz-before-start";
 const QUIZ_STARTED = "quiz-started";
@@ -145,11 +147,11 @@ const ViewQuizPage: React.FunctionComponent = () => {
           participant: {
             uid: user?.uid,
             displayName: user?.displayName,
+            isAnonymous: user?.isAnonymous,
           },
           questions,
         };
 
-        console.log("Request Body", quizToValidate);
         // "http://127.0.0.1:5001/jpp-brain-box/us-central1/evaluatequiz";
         const url = "https://evaluatequiz-uigtbg5fpa-uc.a.run.app";
         const resp = await fetch(url, {
@@ -194,7 +196,7 @@ const ViewQuizPage: React.FunctionComponent = () => {
 
   switch (uiState) {
     case QUIZ_BEFORE_START:
-      if (quiz) {
+      if (quiz && id) {
         childrenToShow = (
           <>
             <p>{quiz.desc}</p>
@@ -237,12 +239,15 @@ const ViewQuizPage: React.FunctionComponent = () => {
                 Quiz.
               </div>
             )}
+
+            <RecentParticipants quizId={id}></RecentParticipants>
           </>
         );
       } else {
         childrenToShow = (
           <>
             <div>Loading Quiz. Please wait.</div>
+            <Spinner></Spinner>
           </>
         );
       }
@@ -272,7 +277,8 @@ const ViewQuizPage: React.FunctionComponent = () => {
       break;
     case QUIZ_SUBMITTED:
       childrenToShow = (
-        <div>
+        <div className="evaluation-progress-container">
+          <Spinner />
           <p>Please wait while we evaluate your answers.</p>
         </div>
       );
@@ -321,13 +327,19 @@ const ViewQuizPage: React.FunctionComponent = () => {
                 <span>Participant:</span>
                 <span>{user?.displayName}</span>
               </div>
+
               <div className="name-value-pair">
                 <span>Email:</span>
-                <span>{user?.email}</span>
+                {user?.isAnonymous ? (
+                  <span>No Email (Anonymous user)</span>
+                ) : (
+                  <span>{user?.email}</span>
+                )}
               </div>
+
               <div className="name-value-pair">
                 <span>Start Time:</span>
-                <span>{startTime?.toDateString()}</span>
+                <span>{getFormattedDate(startTime)}</span>
               </div>
             </div>
 

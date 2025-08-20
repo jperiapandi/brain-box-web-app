@@ -180,7 +180,7 @@ const ProfilePage: React.FunctionComponent = () => {
       {user ? (
         <main className="page-content profile-page">
           <div className="welcome-content">
-            <div className="salute">Hi,</div>
+            <div className="salute">You are logged in as,</div>
             {editing == false ? (
               <div className="display-name-content">
                 <div className="display-name">{user.displayName}</div>
