@@ -234,7 +234,7 @@ const ViewQuizPage: React.FunctionComponent = () => {
               </button>
             </div>
             {user == null && (
-              <div>
+              <div className="p-v-l">
                 Please <Link to={AUTH_PAGE_PATH}>login</Link> to attempt this
                 Quiz.
               </div>

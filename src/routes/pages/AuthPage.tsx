@@ -15,8 +15,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { HOME_PAGE_PATH } from "../router";
+import Spinner from "../../components/Spinner";
 
 const SIGN_IN = "sign-in";
 const SIGN_UP = "sign-up";
@@ -54,6 +55,10 @@ const AuthPage: React.FunctionComponent = () => {
           <AnonymousSignInSection changeUiState={() => {}} />
         )}
       </main>
+
+      <footer className="auth-page-footer">
+        <NavLink to={HOME_PAGE_PATH}>Home</NavLink>
+      </footer>
     </>
   );
 };
@@ -161,8 +166,13 @@ const SignInSection: React.FunctionComponent<AuthSectionProps> = ({
         </button>
       </div>
 
-      <div>
-        {progressState && <p className="info">Please wait..</p>}
+      <div className="controls-container-h">
+        {progressState && (
+          <>
+            <Spinner />
+            <div className="info">Please wait..</div>
+          </>
+        )}
         {errorState && <p className="error">Login failed. Please try again.</p>}
       </div>
 
@@ -341,8 +351,13 @@ const SignUpSection: React.FunctionComponent<AuthSectionProps> = ({
         </button>
       </div>
 
-      <div>
-        {progressState && <div className="info">{"Please wait..."}</div>}
+      <div className="controls-container-h">
+        {progressState && (
+          <>
+            <Spinner />
+            <div className="info">Please wait..</div>
+          </>
+        )}
         {errorState && <div className="error">{errorMsg}</div>}
       </div>
     </section>
@@ -468,7 +483,14 @@ const AnonymousSignInSection: React.FunctionComponent<
     <section className="section-recover-password">
       <h2>Sign In as a Guest</h2>
       <div className="container">
-        {progressState && <div className="info">Please wait...</div>}
+        {progressState && (
+          <>
+            <div className="controls-container-h">
+              <Spinner />
+              <div className="info">Please wait..</div>
+            </div>
+          </>
+        )}
         {errorState && (
           <div className="error">
             Sorry! something went wrong. Please try again later.

@@ -18,6 +18,7 @@ import {
   getCountFromServer,
   getDocs,
   getFirestore,
+  limit,
   query,
   where,
 } from "firebase/firestore";
@@ -76,7 +77,8 @@ const ProfilePage: React.FunctionComponent = () => {
 
       const q3 = query(
         collection(getFirestore(), COLXN_PARTICIPATION),
-        where("participant.uid", "==", user.uid)
+        where("participant.uid", "==", user.uid),
+        limit(5)
       );
 
       getDocs(q3).then(

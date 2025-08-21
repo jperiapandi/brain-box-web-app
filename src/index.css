@@ -210,6 +210,25 @@ ul.simple-list {
   color: var(--md-sys-color-on-error-container);
 }
 
+.p-v-m {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.p-v-l {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+footer.auth-page-footer {
+  position: fixed;
+  width: 100%;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 header.page-header {
   display: flex;
   align-items: center;
